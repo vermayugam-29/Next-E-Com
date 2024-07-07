@@ -7,11 +7,11 @@ export interface USER extends Document {
     name : string,
     email : string,
     password : string,
-    image : string,
     additionalInfo : PROFILE,
     accountType : string,
     myOrders : ORDER[],
-    myCart : CART
+    myCart : CART,
+    deleteAccountDate : Date
 }
 
 const userSchema : Schema<USER> =  new mongoose.Schema({
@@ -25,10 +25,6 @@ const userSchema : Schema<USER> =  new mongoose.Schema({
         required : true,
         trim : true
     } ,
-    image  : {
-        type : String,
-        required : true
-    },
     password : {
         type : String ,
         required : true
@@ -49,6 +45,9 @@ const userSchema : Schema<USER> =  new mongoose.Schema({
     additionalInfo : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Profile'
+    },
+    deleteAccountDate : {
+        type : Date
     }
 })
 

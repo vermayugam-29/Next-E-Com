@@ -5,13 +5,15 @@ import {hash} from 'bcrypt';
 import { signUpValidation } from "@/schemas/signUpSchema";
 import { generateDefault } from "@/utils/defaultImage";
 import OTP from "@/models/otpModel";
+import Cart from "@/models/cartModel";
+import Profile from "@/models/profileModel";
 
 
 export async function POST(req : NextRequest) {
     await dbConnect();
 
     try {
-        const { name , email , password } = signUpValidation.parse(req.json());
+        const { name , email , password , image } = signUpValidation.parse(req.json());
         const {accountType , otp} = await req.json();
 
         const user = await User.findOne({email});
@@ -45,9 +47,29 @@ export async function POST(req : NextRequest) {
 
         const hashedPassword = await hash(password , 10);
 
-        const newUser = await User.create(
-            {name , email , password : hashedPassword , image : imageUrl , accountType}
+        const cart = await Cart.create(
+            {
+                items : [],
+                totalAmount : 0
+            }
         );
+
+        const profile = await Profile.create(
+            {
+                profilePhoto : image ? image : imageUrl,
+                phoneNumber : null,
+                addresses : []
+            }
+        )
+
+        const newUser = await User.create(
+            {
+                name , email , password : hashedPassword ,
+                image : imageUrl , accountType, myCart : cart._id,
+                additionalInfo : profile._id
+            }
+        );
+
 
         return NextResponse.json({
             success : true,

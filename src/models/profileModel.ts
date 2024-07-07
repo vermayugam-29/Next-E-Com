@@ -3,17 +3,21 @@ import {ADDRESS} from './addressModel';
 
 export interface PROFILE extends Document {
     phoneNumber : string,
-    addresses : ADDRESS
+    profilePhoto : string,
+    addresses : ADDRESS[]
 }
 
 const profileSchema : Schema<PROFILE> = new mongoose.Schema({
     phoneNumber : {
         type : String
     },
-    addresses : {
+    profilePhoto : {
+        type : String
+    },
+    addresses : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Address'
-    }
+    }]
 })
 
 

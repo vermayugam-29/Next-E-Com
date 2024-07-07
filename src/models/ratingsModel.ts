@@ -7,6 +7,7 @@ export interface RATING extends Document {
     item: ITEM,
     ratingStars: number,
     reviewDescription: string,
+    verifiedPurchase : boolean
 }
 
 const ratingSchema: Schema<RATING> = new mongoose.Schema({
@@ -26,7 +27,14 @@ const ratingSchema: Schema<RATING> = new mongoose.Schema({
     reviewDescription: {
         type: String,
         required: true
-    }
+    },
+    verifiedPurchase : {
+        type : Boolean,
+        required : true
+    },
+    
+} , {
+    timestamps : true
 })
 
 const RatingAndReviews = mongoose.models.RatingAndReviews as mongoose.Model<RATING> ||

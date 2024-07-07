@@ -51,8 +51,9 @@ export const authOptions: NextAuthOptions = {
             if (user) {
                 token._id = user._id?.toString();
                 token.accountType = user.accounType;
-                token.myCart = user.myCart;
-                token.image = user.image;
+                token.myCart = user.myCart?.toString();
+                token.myOrders = user.myOrders;
+                token.additionalInfo = user.additionalInfo
             }
 
 
@@ -63,7 +64,8 @@ export const authOptions: NextAuthOptions = {
                 session.user._id = token._id;
                 session.user.accounType = token.accounType;
                 session.user.myCart = token.myCart;
-                session.user.image = token.image;
+                session.user.myOrders = token.myOrders;
+                session.user.additionalInfo = token.additionalInfo
             }
 
             return session;
