@@ -27,11 +27,19 @@ export const authOptions: NextAuthOptions = {
 
                 try {
                     const user = await User.findOne(
-                        { email: credentials.identifier }
+                        {
+                            email: credentials.identifier
+                        }
                     );
+
 
                     if (!user) {
                         throw new Error(`No user found with ${credentials.identifier}`);
+                    }
+
+                    if (user.deleteAccountDate !== null) {
+                        throw new Error(`Your account has been deactivated. 
+                            Please reactivate your account to continue`);
                     }
 
                     if (await compare(credentials.password, user.password)) {
@@ -72,10 +80,15 @@ export const authOptions: NextAuthOptions = {
         }
     },
     pages: {
-        signIn: '/logIn'
+        signIn : '/users/logIn',
     },
     session: {
-        strategy: 'jwt'
+        strategy : 'jwt'
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    jwt: {
+        secret : process.env.NEXTAUTH_SECRET
+    },
+    secret : process.env.NEXTAUTH_SECRET,
 }
+
+

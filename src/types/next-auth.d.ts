@@ -24,10 +24,10 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
     interface JWT {
-        _id?: string,
-        accounType?: string,
-        myCart?: string,
-        image?: string,
+        _id? : string,
+        accounType? : string,
+        myCart? : string,
+        image? : string,
         myOrders? : string[],
         additionalInfo? : string
     }

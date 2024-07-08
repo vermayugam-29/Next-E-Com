@@ -11,7 +11,7 @@ export interface USER extends Document {
     accountType : string,
     myOrders : ORDER[],
     myCart : CART,
-    deleteAccountDate : Date
+    deleteAccountDate : Date | null
 }
 
 const userSchema : Schema<USER> =  new mongoose.Schema({
@@ -47,7 +47,8 @@ const userSchema : Schema<USER> =  new mongoose.Schema({
         ref : 'Profile'
     },
     deleteAccountDate : {
-        type : Date
+        type : Date,
+        default : null
     }
 })
 

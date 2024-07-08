@@ -1,0 +1,1 @@
+//how can i handle this should i send a verification link on email or should i send otp ??
