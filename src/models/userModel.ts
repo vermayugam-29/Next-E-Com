@@ -2,6 +2,7 @@ import mongoose , {Schema , Document} from 'mongoose'
 import {ORDER} from './orderModel';
 import {CART} from './cartModel'
 import { PROFILE } from './profileModel';
+import { CHAT } from './chatModel';
 
 export interface USER extends Document {
     name : string,
@@ -11,7 +12,8 @@ export interface USER extends Document {
     accountType : string,
     myOrders : ORDER[],
     myCart : CART,
-    deleteAccountDate : Date | null
+    deleteAccountDate : Date | null,
+    chat : CHAT[]
 }
 
 const userSchema : Schema<USER> =  new mongoose.Schema({
@@ -49,7 +51,11 @@ const userSchema : Schema<USER> =  new mongoose.Schema({
     deleteAccountDate : {
         type : Date,
         default : null
-    }
+    },
+    chat : [{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Chat'
+    }]
 })
 
 const User =  mongoose.models.User as mongoose.Model<USER> || mongoose.model('User' , userSchema);

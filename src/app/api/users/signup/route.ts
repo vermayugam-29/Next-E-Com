@@ -7,6 +7,7 @@ import { generateDefault } from "@/utils/defaultImage";
 import OTP from "@/models/otpModel";
 import Cart from "@/models/cartModel";
 import Profile from "@/models/profileModel";
+import Chat from "@/models/chatModel";
 
 
 export async function POST(req : NextRequest) {
@@ -54,6 +55,12 @@ export async function POST(req : NextRequest) {
             }
         );
 
+        const chat = await Chat.create(
+            {
+                messages : []
+            }
+        );
+
         const profile = await Profile.create(
             {
                 profilePhoto : image ? image : imageUrl,
@@ -66,7 +73,7 @@ export async function POST(req : NextRequest) {
             {
                 name , email , password : hashedPassword ,
                 image : imageUrl , accountType, myCart : cart._id,
-                additionalInfo : profile._id
+                additionalInfo : profile._id , chat : chat._id
             }
         );
 
