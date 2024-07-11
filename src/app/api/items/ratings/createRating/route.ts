@@ -89,6 +89,8 @@ export const POST = async (req: NextRequest) => {
             {new : true}
         )
 
+        //create average rating as soon as new rating is created for item
+
         const populatedRating = await RatingAndReviews.findById(rating._id)
                                     .populate('postedBy')
                                     .populate('item')

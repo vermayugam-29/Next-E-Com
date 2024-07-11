@@ -6,10 +6,10 @@ const app = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
-wss.on('connection', function connection(socket) {
+wss.on('connection', (socket) => {
     socket.on('error', console.error);
 
-    socket.on('message', function message(data, isBinary) {
+    socket.on('message', (data, isBinary) => {
         wss.clients.forEach(client => {
             if (client !== socket && client.readyState === WebSocket.OPEN) {
                 client.send(data, { binary: isBinary });
