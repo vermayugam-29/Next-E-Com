@@ -1,11 +1,20 @@
 import dbConnect from "@/lib/dbConnect";
 import Item from "@/models/itemModel";
+import RatingAndReviews from "@/models/ratingsModel";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(req : NextRequest) {
     await dbConnect();
     try {
         const {itemId} = await req.json();
+        if(!itemId) {
+            return NextResponse.json({
+                success : false,
+                message : 'Please proide with an item id'
+            }, {
+                status : 400
+            })
+        }
         const item = await Item.findById(itemId);
         if(!item) {
             return NextResponse.json({
@@ -15,8 +24,15 @@ export async function PUT(req : NextRequest) {
                 status : 404
             })
         }
+
+        if(item.ratingAndReviews.length !== 0) {
+            for (const ratingId of item.ratingAndReviews) {
+                await RatingAndReviews.findByIdAndDelete(ratingId);
+            }
+        }
+
         const deletedItem = await Item.findByIdAndUpdate(
-            {itemId},
+            itemId,
             {deleted : true},
             {new : true}
         )

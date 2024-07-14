@@ -16,7 +16,7 @@ export interface USER extends Document {
     chat : CHAT[]
 }
 
-const userSchema : Schema<USER> =  new mongoose.Schema({
+export const userSchema : Schema<USER> =  new mongoose.Schema({
     name : {
         type : String,
         required : true,
@@ -58,6 +58,7 @@ const userSchema : Schema<USER> =  new mongoose.Schema({
     }]
 })
 
-const User =  mongoose.models.User as mongoose.Model<USER> || mongoose.model('User' , userSchema);
+const User =  mongoose.models.User as mongoose.Model<USER> || 
+                mongoose.model('User' , userSchema);
 
 export default User;

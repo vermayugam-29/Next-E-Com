@@ -1,7 +1,7 @@
-import mongoose , {Schema , Document} from "mongoose";
+import mongoose , {Schema , Document } from "mongoose";
 import { RATING } from "./ratingsModel";
 
-//still can be improved more like adding how many people buyed till now
+
 export interface ITEM extends Document {
     name : string,
     description : string,
@@ -15,7 +15,7 @@ export interface ITEM extends Document {
     deleted : boolean,
 }
 
-const itemSchema : Schema<ITEM> = new mongoose.Schema({
+export const itemSchema : Schema<ITEM> = new mongoose.Schema({
     name : {
         type : String,
         required : true,

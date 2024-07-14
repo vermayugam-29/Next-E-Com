@@ -13,31 +13,14 @@ export const PUT = async(req : NextRequest) => {
         //here itemId indicates as  rating id
         //changed name because i needed to do validation using zod
         //and in ratingSchema of zod validation i have used itemId as a keyword
-        const { itemId , reviewDescription , ratingStars } = ratingValidation.parse(req.json());
+        const { itemId , reviewDescription , ratingStars } = ratingValidation.parse(await req.json());
 
         const ratingId = itemId;
 
         const token = await getToken({req});
-        const userId = token?._id;
-        const role = token?._accountType;
+        const userId = token!._id;
 
-        if(!userId || !role) {
-            return NextResponse.json({
-                success : false,
-                message : 'Please login to continue'
-            } , {
-                status : 404
-            })
-        }
 
-        if(role === 'Admin') {
-            return NextResponse.json({
-                success : false,
-                message : 'Admins cannot edit user reviews'
-            } , {
-                status : 400
-            })
-        }
 
         const rating = await RatingAndReviews.findById(ratingId);
 
@@ -63,10 +46,13 @@ export const PUT = async(req : NextRequest) => {
             rating.reviewDescription = reviewDescription;
         }
         if(ratingStars) {
-            rating.ratingStars = parseInt(ratingStars);
+            rating.ratingStars = (ratingStars);
         }
 
-        await rating.save().then(rating => rating.populate('postedBy item'));
+        await rating.save()
+        .then((rating) => rating.populate('postedBy item'))
+        .catch((err) => console.log(err))
+
 
         return NextResponse.json({
             success : true,

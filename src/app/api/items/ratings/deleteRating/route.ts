@@ -9,27 +9,6 @@ export const DELETE = async(req : NextRequest) => {
 
     try {
         const {ratingId} = await req.json();
-        const token = await getToken({req});
-        const userId = token?._id;
-        const role = token?._accountType;
-
-        if(!userId || !role) {
-            return NextResponse.json({
-                success : false,
-                message : 'Please login to continue'
-            } , {
-                status : 404
-            })
-        }
-
-        if(role === 'Admin') {
-            return NextResponse.json({
-                success : false,
-                message : 'Admins cannot delete user reviews'
-            } , {
-                status : 404
-            })
-        }
 
         if(!ratingId) {
             return NextResponse.json({

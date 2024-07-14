@@ -7,7 +7,8 @@ import { uploadHelper } from "@/utils/cloudinaryHelper";
 export async function POST(req: NextRequest) {
     await dbConnect();
     try {
-        const { name, price, stockAvailable, description } = itemValidation.parse(req.json());
+        const data = await req.json();
+        const { name, price, stockAvailable, description } = itemValidation.parse(data);
 
         const findItem = await Item.findOne({name});
         if(findItem) {
@@ -20,8 +21,8 @@ export async function POST(req: NextRequest) {
         }
 
         //cloudinary upload code------------------------------------------------
-        const res = uploadHelper(req);
-        //---------------------------------------------------------------------------\
+        const res = 'image' //uploadHelper(req);
+        //-----------------------------------   ----------------------------------------\
 
         const item = await Item.create(
             {

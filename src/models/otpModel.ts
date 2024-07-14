@@ -31,7 +31,7 @@ const otpSchema : Schema<Otp> = new mongoose.Schema(
 async function sendVerificationEmail(email : string, otp : string) {
     try {
         const mailRes = await mailSender(email , 'Verification Email from RPR' , otpTemplate(otp));
-        console.log('Sent mail success' , mailRes);
+        console.log('Mail sent success' , mailRes);
     } catch(error : any){
         console.log(error);
         throw new Error(error.message)

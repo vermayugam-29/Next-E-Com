@@ -2,7 +2,6 @@ import dbConnect from "@/lib/dbConnect";
 import Item from "@/models/itemModel";
 import Order from "@/models/orderModel";
 import RatingAndReviews from "@/models/ratingsModel";
-import User from "@/models/userModel";
 import { ratingValidation } from "@/schemas/ratingSchema";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
@@ -12,32 +11,11 @@ export const POST = async (req: NextRequest) => {
 
     try {
 
-        //can also add that user should have bought the item for it to be reviewed
-
-        const { itemId, ratingStars, reviewDescription } = ratingValidation.parse(req.json());
+        const { itemId, ratingStars, reviewDescription } = ratingValidation.parse(await req.json());
 
         const token = await getToken({ req });
-        const userId = token?._id;
-        const orders = token?.myOrders;
-        
-        if (!userId) {
-            return NextResponse.json({
-                success: false,
-                message: 'Please log in to continue'
-            }, {
-                status: 400
-            })
-        }
-        
-        const role = token?.accounType;
-        if (role === 'Admin') {
-            return NextResponse.json({
-                success: false,
-                message: 'Admins cannot give reviews on their own items'
-            }, {
-                status: 404
-            })
-        }
+        const userId = token!._id;
+        const orders = token!.myOrders;
 
 
         const item = await Item.findById(itemId);
@@ -51,20 +29,32 @@ export const POST = async (req: NextRequest) => {
             })
         }
 
+        if(item.deleted) {
+            return NextResponse.json({
+                success : false,
+                message : 'This item was deleted by the user cannot rate it now'
+            }, {
+                status : 404
+            })
+        }
+
         let hasUserPurchasedTheItem = false;
 
-        if(orders?.length !== 0 && orders !== undefined) {
-            // for(const orderId of orders) {
-            //     const order = await Order.findOne(
-            //         {_id : orderId , $in : {items : item._id}}
-            //     )
-            //     if(order) {
-            //         hasUserPurchasedTheItem = true;
-            //         break;
-            //     }
-            // }
+        if(orders!.length !== 0) {
 
-            hasUserPurchasedTheItem = orders.some(async (orderId) => {
+            /*
+            for(const orderId of orders) {
+                const order = await Order.findOne(
+                    {_id : orderId , $in : {items : item._id}}
+                )
+                if(order) {
+                    hasUserPurchasedTheItem = true;
+                    break;
+                }
+            }
+            */
+
+            hasUserPurchasedTheItem = orders!.some(async (orderId) => {
                 const order = await Order.findOne({
                     _id: orderId,
                     items: item._id 

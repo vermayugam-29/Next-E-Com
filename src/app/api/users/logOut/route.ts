@@ -6,6 +6,7 @@ export async function PUT(req: NextRequest) {
     await dbConnect();
 
     try {
+        console.log('yugam');
         const token = await getToken({ req });
         const userId = token?._id;
 

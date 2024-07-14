@@ -14,8 +14,10 @@ export async function POST(req : NextRequest) {
     await dbConnect();
 
     try {
-        const { name , email , password , image } = signUpValidation.parse(req.json());
-        const {accountType , otp} = await req.json();
+        const data = await req.json();
+        const { name , email , password /*, image */ } = signUpValidation.parse(data);
+
+        const {accountType , otp } = data;
 
         const user = await User.findOne({email});
         if(user) {
@@ -63,7 +65,7 @@ export async function POST(req : NextRequest) {
 
         const profile = await Profile.create(
             {
-                profilePhoto : image ? image : imageUrl,
+                profilePhoto : /*image ? image :*/ imageUrl,
                 phoneNumber : null,
                 addresses : []
             }

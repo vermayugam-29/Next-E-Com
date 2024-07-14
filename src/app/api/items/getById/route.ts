@@ -2,7 +2,7 @@ import dbConnect from "@/lib/dbConnect";
 import Item from "@/models/itemModel";
 import { NextRequest, NextResponse } from "next/server";
 
-export async  function GET(req : NextRequest) {
+export async function POST(req : NextRequest) {
     await dbConnect();
     try {
         const {itemId} = await req.json();

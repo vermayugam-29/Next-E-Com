@@ -1,32 +1,36 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { USER } from "./userModel";
-import { ITEM } from "./itemModel";
+import {USER , userSchema} from "./userModel";
+import {ITEM , itemSchema}  from "./itemModel";
+
+mongoose.model('User' , userSchema);
+mongoose.model('Item' , itemSchema);
 
 export interface RATING extends Document {
     postedBy: USER,
-    item: ITEM,
+    item: ITEM ,
     ratingStars: number,
     reviewDescription: string,
     verifiedPurchase : boolean
 }
 
-const ratingSchema: Schema<RATING> = new mongoose.Schema({
+export const ratingSchema: Schema<RATING> = new mongoose.Schema({
     postedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
+        type : mongoose.Schema.Types.ObjectId,
+        ref : `User`,
+        required : true
     },
     item: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Item',
+        type : mongoose.Schema.Types.ObjectId,
+        ref : `Item`,
         required : true
     },
     ratingStars: {
-        type: Number,
-        required: true,
+        type : Number,
+        required : true,
     },
     reviewDescription: {
-        type: String,
-        required: true
+        type : String,
+        required : true
     },
     verifiedPurchase : {
         type : Boolean,

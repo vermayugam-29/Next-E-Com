@@ -4,20 +4,24 @@ import { DefaultSession } from 'next-auth'
 declare module 'next-auth' {
     interface User {
         _id?: string,
-        accounType?: string,
+        accountType?: string,
         myCart?: string,
         image?: string,
         myOrders? : string[],
-        additionalInfo? : string
+        additionalInfo? : string,
+        name? : string,
+        chat? : string[]
     }
     interface Session {
         user: {
             _id?: string,
-            accounType?: string,
+            accountType?: string,
             myCart?: string,
             image?: string,
             myOrders? : string[],
-            additionalInfo? : string
+            additionalInfo? : string,
+            name? : string,
+            chat? : string[]
         } &  DefaultSession['user']
     }
 }
@@ -25,10 +29,12 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
     interface JWT {
         _id? : string,
-        accounType? : string,
+        accountType? : string,
         myCart? : string,
         image? : string,
         myOrders? : string[],
-        additionalInfo? : string
+        additionalInfo? : string,
+        name? : string,
+        chat? : string[]
     }
 }

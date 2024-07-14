@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const signUpValidation = z.object({
-    image : z.string().url(),
+    // image : z.string().url(),
 
     name: z.string().max(25, { message: 'Name cannot exceed 25 characters' }),
     
