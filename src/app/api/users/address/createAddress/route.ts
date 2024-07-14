@@ -9,7 +9,7 @@ export async function POST(req : NextRequest) {
     await dbConnect();
 
     try {
-        const {houseNo , landmark , city , state , pincode} = addressValidation.parse(req.json());
+        const {houseNo , landmark , city , state , pincode} = addressValidation.parse(await req.json());
 
         const token = await getToken({req});
         const additionalInfo = token?.additionalInfo;

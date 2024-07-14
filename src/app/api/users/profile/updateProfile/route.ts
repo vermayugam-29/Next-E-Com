@@ -7,19 +7,12 @@ export const PUT = async(req : NextRequest) => {
     await dbConnect();
 
     try {
-        const {image , phoneNumber , addressId} = await req.json();
+        const {image , phoneNumber , dob , gender} = await req.json();
 
         const token = await getToken({req});
-        const additionalInfo = token?.additionalInfo;
+        const additionalInfo = token!.additionalInfo;
 
-        if(!additionalInfo) {
-            return NextResponse.json({
-                success : false,
-                message : 'Please login to continue',
-            } , {
-                status : 400
-            })
-        }
+
 
         const profile = await Profile.findById(additionalInfo);
 
@@ -38,11 +31,16 @@ export const PUT = async(req : NextRequest) => {
         if(phoneNumber) {
             profile.phoneNumber = phoneNumber
         }
-        if(addressId) {
-            profile.addresses.push(addressId);
+        if(dob) {
+            profile.dob = dob;
+        }
+        if(gender) {
+            profile.gender = gender;
         }
 
-        await profile.save();
+        await profile.save()
+        .then(profile => profile.populate('addresses defaultAddress'))
+        .catch(err => console.log(err));
 
         return NextResponse.json({
             success : true,

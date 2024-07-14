@@ -67,7 +67,10 @@ export async function POST(req : NextRequest) {
             {
                 profilePhoto : /*image ? image :*/ imageUrl,
                 phoneNumber : null,
-                addresses : []
+                addresses : [],
+                defaultAddress : null,
+                gender : null,
+                dob : null
             }
         )
 

@@ -1,13 +1,18 @@
 import mongoose , {Schema , Document} from "mongoose";
-import {ADDRESS} from './addressModel';
+import {ADDRESS , addressSchema} from './addressModel';
+
+mongoose.model('Address' , addressSchema);
 
 export interface PROFILE extends Document {
     phoneNumber : string,
     profilePhoto : string,
-    addresses : ADDRESS[]
+    addresses : ADDRESS[],
+    defaultAddress : ADDRESS,
+    dob : string,
+    gender : string
 }
 
-const profileSchema : Schema<PROFILE> = new mongoose.Schema({
+export const profileSchema : Schema<PROFILE> = new mongoose.Schema({
     phoneNumber : {
         type : String
     },
@@ -17,7 +22,20 @@ const profileSchema : Schema<PROFILE> = new mongoose.Schema({
     addresses : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Address'
-    }]
+    }],
+    defaultAddress : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Address'
+    },
+    dob : {
+        type : String,
+        trim : true,
+    } ,
+    gender : {
+        type : String,
+        enum : ['Male' , 'Female' , 'Prefer Not to say'],
+        trim : true,
+    }
 })
 
 

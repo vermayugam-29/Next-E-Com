@@ -1,11 +1,13 @@
 import mongoose , {Schema , Document} from 'mongoose';
-import { MESSAGE } from './messageModel.';
+import { MESSAGE , messageSchema } from './messageModel.';
+
+// mongoose.model('Message' , messageSchema);
 
 export interface CHAT extends Document {
     messages : MESSAGE[]
 }
 
-const chatSchema : Schema<CHAT> = new mongoose.Schema({
+export const chatSchema : Schema<CHAT> = new mongoose.Schema({
     messages : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Message'

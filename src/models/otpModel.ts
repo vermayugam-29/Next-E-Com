@@ -9,7 +9,7 @@ export interface Otp extends Document {
     createdAt : Date
 }
 
-const otpSchema : Schema<Otp> = new mongoose.Schema(
+export const otpSchema : Schema<Otp> = new mongoose.Schema(
     {
         email : {
             type : String,

@@ -1,12 +1,16 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import User, { USER } from './userModel';
-import { ITEM } from './itemModel'
+import User, { USER , userSchema } from './userModel';
+import { ITEM , itemSchema } from './itemModel'
 import dotenv from 'dotenv'
 import mailSender from '@/utils/mailSender';
 import orderDetailTemplate from '../../mailTemplates/orderMail';
-import {ADDRESS} from './addressModel';
+import {ADDRESS , addressSchema} from './addressModel';
 dotenv.config();
 const orderId = require('order-id')(process.env.ORDER_SECRET)
+
+// mongoose.model('User' , userSchema);
+// mongoose.model('Item' , itemSchema);
+// mongoose.model('Address' , addressSchema);
 
 export interface ORDER extends Document {
     items: ITEM[],
@@ -28,7 +32,7 @@ export interface ORDER extends Document {
     deliveredBy: USER | string
 }
 
-const orderSchema: Schema<ORDER> = new mongoose.Schema({
+export const orderSchema: Schema<ORDER> = new mongoose.Schema({
     items: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Item'

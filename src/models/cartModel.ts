@@ -1,13 +1,14 @@
 import mongoose , {Schema , Document} from "mongoose";
-import { ITEM } from "./itemModel";
-import { USER } from "./userModel";
+import { ITEM , itemSchema } from "./itemModel";
+
+// mongoose.model('Item' , itemSchema);
 
 export interface CART extends Document {
     items : ITEM[],
     totalAmount : string
 }
 
-const cartSchema : Schema<CART> = new mongoose.Schema({
+export const cartSchema : Schema<CART> = new mongoose.Schema({
     items : [{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Item',

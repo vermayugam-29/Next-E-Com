@@ -1,17 +1,17 @@
 import mongoose , {Schema , Document} from 'mongoose';
-import { USER } from './userModel';
+import { USER , userSchema} from './userModel';
+
+// mongoose.model('User' , userSchema);
 
 export interface MESSAGE extends Document {
     user : USER,
     description : string,
-    // date : Date,
     maxDeleteDate : Date,
     deleteType : string,
-    deletedBy : USER,
-    // updateDate : Date
+    deletedBy : USER
 }
 
-const messageSchema : Schema<MESSAGE> = new mongoose.Schema({
+export const messageSchema : Schema<MESSAGE> = new mongoose.Schema({
     user : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User'
@@ -21,10 +21,6 @@ const messageSchema : Schema<MESSAGE> = new mongoose.Schema({
         required : true,
         trim : true
     } ,
-    // date : {
-    //     type : Date,
-    //     default : Date.now()
-    // } ,
     maxDeleteDate : {
         type : Date,
         default : () => new Date(Date.now() + 2 * 60 * 60 * 1000)

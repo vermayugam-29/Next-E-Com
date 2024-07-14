@@ -1,22 +1,30 @@
-//do i really need this profile route when i already added additionalDetails in token ??????
+import dbConnect from "@/lib/dbConnect";
+import Profile from "@/models/profileModel";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 
-// import dbConnect from "@/lib/dbConnect";
-// import { getToken } from "next-auth/jwt";
-// import { NextRequest, NextResponse } from "next/server";
+export async function POST(req : NextRequest) {
+    await dbConnect();
 
-// export async function GET(req : NextRequest) {
-//     await dbConnect();
+    try {
+        const token = await getToken({req});
+        const profileId = token!.additionalInfo;
 
-//     try {
-//         const token = await getToken({req});
-//         const additionalDetails = 
-//     } catch (err : any) {
-//         return NextResponse.json({
-//             success : false,
-//             message : 'Something went wrong while fetching user details',
-//             error : err.message
-//         } , {
-//             status : 500
-//         })
-//     }
-// }
+        const profile = await Profile.findById(profileId)
+        .populate('addresses').populate('defaultAddress').exec();
+
+        return NextResponse.json({
+            success : true,
+            message : 'Profile details fetched successfully',
+            data : profile
+        })
+    } catch (err : any) {
+        return NextResponse.json({
+            success : false,
+            message : 'Something went wrong while fetching user details',
+            error : err.message
+        } , {
+            status : 500
+        })
+    }
+}

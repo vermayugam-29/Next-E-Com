@@ -1,8 +1,13 @@
 import mongoose , {Schema , Document} from 'mongoose'
-import {ORDER} from './orderModel';
-import {CART} from './cartModel'
-import { PROFILE } from './profileModel';
-import { CHAT } from './chatModel';
+import {ORDER  , orderSchema} from './orderModel';
+import {CART , cartSchema} from './cartModel'
+import { PROFILE , profileSchema } from './profileModel';
+import { CHAT , chatSchema} from './chatModel';
+
+// mongoose.model('Order' , orderSchema);
+// mongoose.model('Cart' , cartSchema);
+// mongoose.model('Profile' , profileSchema);
+// mongoose.model('Chat' , chatSchema);
 
 export interface USER extends Document {
     name : string,

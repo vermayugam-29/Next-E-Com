@@ -10,7 +10,7 @@ export const PUT = async(req : NextRequest) => {
 
     try {
         const { oldPassword} = await req.json();
-        const {password} = passwordValidation.parse(req.json());
+        const {password} = passwordValidation.parse(await req.json());
         const token = await getToken({req});
         const userId = token?._id;
 

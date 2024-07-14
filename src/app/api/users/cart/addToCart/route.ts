@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req : NextRequest) {
     await dbConnect();
     try {
-        const { itemId ,  amount} = cartValidation.parse(req.json()); 
+        const { itemId ,  amount} = cartValidation.parse(await req.json()); 
         const token = await getToken({req});
         const cartId = token?.myCart;
 

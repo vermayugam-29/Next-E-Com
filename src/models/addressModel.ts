@@ -9,7 +9,7 @@ export interface ADDRESS extends Document {
     pincode: number
 }
 
-const addressSchema: Schema<ADDRESS> = new mongoose.Schema({
+export const addressSchema: Schema<ADDRESS> = new mongoose.Schema({
     houseNo: {
         type: String,
         required: true,

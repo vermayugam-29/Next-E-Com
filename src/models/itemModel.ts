@@ -1,5 +1,5 @@
 import mongoose , {Schema , Document } from "mongoose";
-import { RATING } from "./ratingsModel";
+import { RATING , ratingSchema } from "./ratingsModel";
 
 
 export interface ITEM extends Document {
@@ -42,7 +42,7 @@ export const itemSchema : Schema<ITEM> = new mongoose.Schema({
     },
     ratingAndReviews : [{
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'RatingAndReviews'
+        ref : 'RatingAndReviews',
     }],
     deleted : {
         type : Boolean,

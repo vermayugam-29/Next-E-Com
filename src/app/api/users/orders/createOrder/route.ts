@@ -8,7 +8,7 @@ import { getToken } from "next-auth/jwt";
 export async function POST(req : NextRequest) {
     await dbConnect();
     try {
-        const {items  , amount} = orderValidation.parse(req.json());
+        const {items  , amount} = orderValidation.parse(await req.json());
         //remove order by from zod validations
         const {deliveryPrice, shippingAddress} = await req.json();
         

@@ -4,17 +4,18 @@ import dbConnect from "@/lib/dbConnect";
 import Chat from "@/models/chatModel";
 import User from "@/models/userModel";
 import { getToken } from "next-auth/jwt";
-import { flightRouterStateSchema } from "next/dist/server/app-render/types";
 import { NextRequest , NextResponse } from "next/server";
 
-export const GET = async(req : NextRequest) => {
+export const POST = async(req : NextRequest) => {
     await dbConnect();
 
     try {
         const token = await getToken({req});
-        const userId = token?._id;
-        const accountType = token?.accounType;
+        const userId = token!._id;
+        const accountType = token!.accounType;
 
+
+        //use middleware instead
         if(!userId || !token) {
             return NextResponse.json({
                 success : false,

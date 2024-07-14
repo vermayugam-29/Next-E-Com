@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
         const item = await Item.create(
             {
                 name , mainImage : res,
-                price , stockAvailable , description
+                price , stockAvailable , description,
+                ratingAndReviews : []
             }
         );
 

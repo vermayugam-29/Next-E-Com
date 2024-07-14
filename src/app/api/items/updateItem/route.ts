@@ -18,7 +18,7 @@ export async function PUT(req: NextRequest) {
         }
 
         const findItem = await Item.findOne(
-            { item: itemId, deleted: false }
+            { _id : itemId, deleted: false }
         );
 
         if (!findItem) {
@@ -49,7 +49,9 @@ export async function PUT(req: NextRequest) {
             findItem.stockAvailable = stockAvailable;
         }
 
-        await findItem.save();
+        await findItem.save()
+        .then(item => item.populate('ratingAndReviews'))
+        .catch(err => console.log(err));
 
         return NextResponse.json({
             success : true,
