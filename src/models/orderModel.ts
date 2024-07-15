@@ -1,11 +1,12 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import User, { USER, userSchema } from './userModel';
-import { ITEM, itemSchema } from './itemModel'
+import Item, { ITEM, itemSchema } from './itemModel'
 import dotenv from 'dotenv'
 import mailSender from '@/utils/mailSender';
 import orderDetailTemplate from '../../mailTemplates/orderMail';
 import { ADDRESS, addressSchema } from './addressModel';
 import { QUANTITY } from './cartModel';
+import { v4 as uuidv4 } from 'uuid';
 dotenv.config();
 const orderId = require('order-id')(process.env.ORDER_SECRET)
 
@@ -60,7 +61,7 @@ export const orderSchema: Schema<ORDER> = new mongoose.Schema({
     }],
     orderId: {
         type: String || Number,
-        default: orderId.generate(),
+        default: uuidv4,//orderId.generate(),
         unique: true
     },
     orderedOn: {
@@ -118,21 +119,25 @@ export const orderSchema: Schema<ORDER> = new mongoose.Schema({
     timestamps: true
 });
 
-
+//use redis service later
 async function sendOrderEmail(orderBy: any, orderTo: string[], amount: string, items: any) {
     try {
         const user = await User.findById(orderBy);
 
-        const itemsPurchased: string[] = items.map((item: any) => item.name);
+        const itemsPurchased: string[] = await Promise.all(items.map(async(item: any) => {
+            const findItem = await Item.findById(item);
+            return findItem!.name;
+        }));
 
         if (!user) {
             console.log(`user dosen't exist error sending email to admin`);
             return;
         }
-        for (const admin of orderTo) {
-            await mailSender(admin, `Order by ${user.name}`,
+        const emailPromises = orderTo.map(admin => {
+            return mailSender(admin, `Order by ${user.name}`,
                 orderDetailTemplate(user.name, itemsPurchased, amount));
-        }
+        });
+        await Promise.all(emailPromises);
         console.log('mail sent successfully to all the admins')
     } catch (error: any) {
         console.log(error);
@@ -140,12 +145,15 @@ async function sendOrderEmail(orderBy: any, orderTo: string[], amount: string, i
     }
 }
 
-orderSchema.post('save', async function (doc, next) {
+orderSchema.post('save', async function(doc, next) {
     try {
-        if (doc.orderTo && doc.orderBy && doc.amount && doc.items) {
+        const isNewOrder = doc.isNew;
+        next();
+
+
+        if (isNewOrder && doc.orderTo && doc.orderBy && doc.amount && doc.items) {
             await sendOrderEmail(doc.orderBy, doc.orderTo, doc.amount, doc.items);
         }
-        next();
     } catch (error: any) {
         next(error);
     }

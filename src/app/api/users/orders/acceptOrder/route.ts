@@ -1,7 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import Order from "@/models/orderModel";
 import User from "@/models/userModel";
-import mongoose from "mongoose";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -11,16 +10,8 @@ export async function PUT(req: NextRequest) {
         const { id } = await req.json();
 
         const token = await getToken({req});
-        const userId = token?._id;
+        const userId = token!._id;
 
-        if(!userId) { 
-            return NextResponse.json({
-                success : false,
-                message : 'Please login to continue'
-            },{
-                status : 404
-            })
-        }
 
 
 
@@ -89,7 +80,7 @@ export async function PUT(req: NextRequest) {
         findOrder.status = 'Accepted';
         findOrder.acceptedOn = new Date(Date.now());
         //add accepted by using token
-        findOrder.acceptedBy = userId;
+        findOrder.acceptedBy = userId!;
         await findOrder.save().then(order => order.populate('orderBy acceptedBy'));
 
         return NextResponse.json({

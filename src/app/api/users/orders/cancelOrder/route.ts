@@ -8,15 +8,8 @@ export async function PUT(req: NextRequest) {
     try {
         const { id } = await req.json();
         const token = await getToken({req});
-        const userId = token?._id;
-        if(!userId) { 
-            return NextResponse.json({
-                success : false,
-                message : 'Please login to continue'
-            },{
-                status : 404
-            })
-        }
+        const userId = token!._id;
+        
         if (!id) {
             return NextResponse.json({
                 success: false,
@@ -75,12 +68,12 @@ export async function PUT(req: NextRequest) {
 
         order.status = 'Cancelled';
         order.cancelledOn = new Date(Date.now());
-        order.cancelledBy = userId;
+        order.cancelledBy = userId!;
 
         await order.save().then((order) => order.populate('orderBy'));
 
         return NextResponse.json({
-            success : false,
+            success : true,
             message : 'Order cancelled successfully',
             data : order
         } , {
@@ -89,7 +82,7 @@ export async function PUT(req: NextRequest) {
 
     } catch (error: any) {
         return NextResponse.json({
-            success : true,
+            success : false,
             message : 'Something went wrong while cancelling order please try again later',
             error : error.message
         }, {

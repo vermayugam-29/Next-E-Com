@@ -1,7 +1,7 @@
 import mongoose , {Schema , Document} from "mongoose";
 import {ADDRESS , addressSchema} from './addressModel';
 
-mongoose.model('Address' , addressSchema);
+// mongoose.model('Address' , addressSchema);
 
 export interface PROFILE extends Document {
     phoneNumber : string,

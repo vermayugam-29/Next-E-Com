@@ -12,16 +12,7 @@ export async function PUT(req : NextRequest) {
         const {id} = await req.json();
 
         const token = await getToken({req});
-        const userId = token?._id;
-
-        if(!userId) { 
-            return NextResponse.json({
-                success : false,
-                message : 'Please login to continue'
-            },{
-                status : 404
-            })
-        }
+        const userId = token!._id;
 
         if(!id) {
             return NextResponse.json({
@@ -69,11 +60,19 @@ export async function PUT(req : NextRequest) {
                 status: 404
             })
         }
+        if (order.status !== 'Accepted') {
+            return NextResponse.json({
+                success : false,
+                message : 'Order first needs to be accepted to be delivered'
+            }, {
+                status : 404
+            })
+        }
         //status checks-------------------------------------------------------------------
 
         order.status = 'Delivered';
         order.deliveredOn = new Date(Date.now());
-        order.deliveredBy = userId;
+        order.deliveredBy = userId!;
 
         await order.save();
 
@@ -82,7 +81,7 @@ export async function PUT(req : NextRequest) {
         //as soon as order is delivered add increment the sold count to what it was before
         for(const item of items) {
             await Item.findByIdAndUpdate(
-                {item},
+                item,
                 {$inc : {soldCount : 1}},
                 {new : true}
             )
