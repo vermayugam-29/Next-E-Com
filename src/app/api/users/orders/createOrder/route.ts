@@ -1,51 +1,69 @@
 import dbConnect from "@/lib/dbConnect";
 import Order from "@/models/orderModel";
 import User from "@/models/userModel";
-import { orderValidation } from "@/schemas/orderSchema";
+import Cart from "@/models/cartModel";
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import Profile from "@/models/profileModel";
 
 export async function POST(req : NextRequest) {
     await dbConnect();
     //while creating order fetch details from the cart
     try {
-        const {items  , amount} = orderValidation.parse(await req.json());
-        //remove order by from zod validations
-        const {deliveryPrice, shippingAddress} = await req.json();
-        
         const token = await getToken({req});
-        const orderBy = token?._id;
+        const orderBy = token!._id;
+        const cartId = token!.myCart;
+        const {additionalInfo} = token!;
 
-        if(!orderBy) { 
+        const {deliveryPrice, shippingAddress} = await req.json();
+
+        const cart = await Cart.findById(cartId);
+        if(!cart) {
             return NextResponse.json({
                 success : false,
-                message : 'Please login to continue'
-            },{
+                message : 'Please provide with valid cartId to fetch order details'
+            }, {
                 status : 404
             })
         }
-        if(!shippingAddress) {{
+
+        
+        const {items , totalAmount , quantityOfItem} = cart;
+
+        if(items.length === 0) {
             return NextResponse.json({
                 success : false,
-                message : 'Please provide a address for order to be delivered on it'
-            } , {
+                message : 'Please add items in cart to continue',
+            }, {
                 status : 404
             })
-        }}
-        
+        }
 
+        let address = shippingAddress;
+
+        if(!shippingAddress) {
+            const  profile = await Profile.findById(additionalInfo);
+            address = profile!.defaultAddress;
+        }
+
+        if(!address) {
+            return NextResponse.json({
+                success : false,
+                message : 'Please provide with a addressId to deliver your order'
+            }, {
+                status : 400
+            })
+        }
 
 
         const order = await Order.create(
             {
-                items , orderBy , amount,
-                shippingAddress  , orderedOn : new Date(Date.now())
+                items , orderBy , amount : totalAmount, quantityOfItem,
+                shippingAddress : address  , orderedOn : new Date(Date.now())
             }
         );
 
         
-
-
         const admins = await User.find({accountType : 'Admin'});
         let adminEmails : string[] = [];
 

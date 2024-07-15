@@ -7,17 +7,6 @@ export async function POST(req : NextRequest) {
     await dbConnect();
     try {
         const {id} = await req.json();
-        const token =  await getToken({req});
-        const userId = token?._id;
-
-        if(!userId) { 
-            return NextResponse.json({
-                success : false,
-                message : 'Please login to continue'
-            },{
-                status : 404
-            })
-        }
         
         
         if(!id) {
@@ -44,13 +33,13 @@ export async function POST(req : NextRequest) {
         if(order.status === 'Pending') {
             await order.populate('items orderBy');
         } else if(order.status === 'Cancelled') {
-            await order.populate('items orderBy cancelledBy cancelledOn');
+            await order.populate('items orderBy cancelledBy');
         } else if(order.status === 'Rejected') {
-            await order.populate('items orderBy rejectedOn rejectedBy');
+            await order.populate('items orderBy rejectedBy');
         } else if(order.status === 'Accepted') {
-            await order.populate('items orderBy acceptedBy acceptedOn');
+            await order.populate('items orderBy acceptedBy');
         } else if(order.status === 'Delivered') {
-            await order.populate('items orderBy acceptedOn acceptedBy deliveredOn deliveredBy');
+            await order.populate('items orderBy acceptedBy deliveredBy');
         }
         
 

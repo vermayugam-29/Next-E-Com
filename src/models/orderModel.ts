@@ -1,10 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import User, { USER , userSchema } from './userModel';
-import { ITEM , itemSchema } from './itemModel'
+import User, { USER, userSchema } from './userModel';
+import { ITEM, itemSchema } from './itemModel'
 import dotenv from 'dotenv'
 import mailSender from '@/utils/mailSender';
 import orderDetailTemplate from '../../mailTemplates/orderMail';
-import {ADDRESS , addressSchema} from './addressModel';
+import { ADDRESS, addressSchema } from './addressModel';
+import { QUANTITY } from './cartModel';
 dotenv.config();
 const orderId = require('order-id')(process.env.ORDER_SECRET)
 
@@ -14,6 +15,7 @@ const orderId = require('order-id')(process.env.ORDER_SECRET)
 
 export interface ORDER extends Document {
     items: ITEM[],
+    quantityOfItem : QUANTITY,
     orderBy: USER | string,
     orderId: string | number,
     orderTo: string[],
@@ -35,7 +37,19 @@ export interface ORDER extends Document {
 export const orderSchema: Schema<ORDER> = new mongoose.Schema({
     items: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Item'
+        ref: 'Item',
+        required : true
+    }],
+    quantityOfItem: [{
+        item: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Item',
+            required : true
+        },
+        quantity : {
+            type : Number,
+            required : true
+        }
     }],
     orderBy: {
         type: mongoose.Schema.Types.ObjectId,
@@ -100,8 +114,8 @@ export const orderSchema: Schema<ORDER> = new mongoose.Schema({
     deliveredOn: {
         type: Date
     }
-},{
-    timestamps : true
+}, {
+    timestamps: true
 });
 
 
