@@ -1,35 +1,25 @@
 import dbConnect from "@/lib/dbConnect";
 import Item from "@/models/itemModel";
 import Cart from "@/models/cartModel";
-import { cartValidation } from "@/schemas/cartValidation";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async(req : NextRequest) => {
     await dbConnect();
     try {
-        const {itemId , amount}  = cartValidation.parse(req.json());
-        const token = await getToken({req});
-        const cartId = token?.myCart;
+        const {itemId}  = await req.json();
 
-        if(!cartId) {
+        if(!itemId) {
             return NextResponse.json({
                 success : false,
-                message : 'Please login to continue'
-            } , {
+                message : 'Please provide with a item id'
+            }, {
                 status : 400
             })
         }
 
-        const role = token?.accounType;
-        if (role === 'Admin') {
-            return NextResponse.json({
-                success: false,
-                message: `Admins cannot remove items from customer's cart`
-            }, {
-                status: 404
-            })
-        }
+        const token = await getToken({req});
+        const cartId = token!.myCart;
 
         const item = await Item.findById(itemId);
         if(!item) {
@@ -60,11 +50,33 @@ export const PUT = async(req : NextRequest) => {
             })
         }
 
+        let quantityOfItem = 0;
+
+        for(const quantityId of cart.quantityOfItem) {
+            if(quantityId.item.toString() === itemId) {
+                quantityOfItem = quantityId.quantity;
+            } 
+        }
+
+        if (quantityOfItem === 0) {
+            return NextResponse.json({
+                success: false,
+                message: 'Item not found in the cart'
+            }, {
+                status: 404
+            });
+        }
+
+        let amountToBeDeducted = parseFloat(item.price) * quantityOfItem;
+
         cart = await Cart.findByIdAndUpdate(
-            {cartId},
-            {$pull : {items : item._id} , $inc : {totalAmount : -amount}},
-            {new : true}
-        ).populate('items').exec();
+            cartId,
+            {
+                $inc: { totalAmount: -amountToBeDeducted },
+                $pull: { quantityOfItem: { item: itemId }, items: itemId }
+            },
+            { new: true }
+        ).populate('items').populate('quantityOfItem.item').exec();
 
 
         return NextResponse.json({

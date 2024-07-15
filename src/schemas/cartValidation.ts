@@ -8,5 +8,6 @@ export const cartValidation = z.object({
             return numberValue > 0;
         }, {
             message: "Amount must be greater than zero",
-        })
+        }),
+    quantity : z.number()
 });

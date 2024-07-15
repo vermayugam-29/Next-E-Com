@@ -1,5 +1,5 @@
 import mongoose , {Schema , Document } from "mongoose";
-import { RATING , ratingSchema } from "./ratingsModel";
+import { RATING } from "./ratingsModel";
 
 
 export interface ITEM extends Document {
@@ -56,6 +56,8 @@ export const itemSchema : Schema<ITEM> = new mongoose.Schema({
         type : Number, 
         default : 0
     }
+},{
+    timestamps : true
 });
 
 const Item = mongoose.models.Item as mongoose.Model<ITEM> || mongoose.model('Item' , itemSchema);

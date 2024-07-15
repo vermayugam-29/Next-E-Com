@@ -9,19 +9,10 @@ export async function POST(req : NextRequest) {
     await dbConnect();
 
     try {
-        const {houseNo , landmark , city , state , pincode} = addressValidation.parse(await req.json());
+        const {name , phoneNumber , houseNo , landmark , city , state , pincode} = addressValidation.parse(await req.json());
 
         const token = await getToken({req});
-        const additionalInfo = token?.additionalInfo;
-
-        if(!additionalInfo) {
-            return NextResponse.json({
-                success : false,
-                message : 'Please login to continue'
-            } , {
-                status : 404
-            })
-        }
+        const additionalInfo = token!.additionalInfo;
 
         const profile = await Profile.findById(additionalInfo);
 
@@ -36,7 +27,7 @@ export async function POST(req : NextRequest) {
 
         const address  = await Address.create(
             {
-                houseNo , landmark , city , state , pincode
+                name , phoneNumber , houseNo , landmark , city , state , pincode
             }
         );
 

@@ -8,18 +8,12 @@ export async function GET(req : NextRequest) {
 
     try {
         const token = await getToken({req});
-        const additionalInfo = token?.additionalInfo;
+        const additionalInfo = token!.additionalInfo;
 
-        if(!additionalInfo) {
-            return NextResponse.json({
-                success : false,
-                message : 'Please login to access address details'
-            } , {
-                status : 404
-            })
-        }
+      
 
-        const profile = await Profile.findById(additionalInfo).populate('addresses');
+        const profile = await Profile.findById(additionalInfo)
+        .populate('addresses').populate('defaultAddress').exec();
         if(!profile) {
             return NextResponse.json({
                 success : false,

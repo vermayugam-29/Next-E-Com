@@ -12,6 +12,8 @@ export const chatSchema : Schema<CHAT> = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Message'
     }]
+},{
+    timestamps : true
 })
 
 const Chat = mongoose.models.Chat as mongoose.Model<CHAT> || 

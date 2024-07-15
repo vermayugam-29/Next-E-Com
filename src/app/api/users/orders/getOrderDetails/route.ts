@@ -3,7 +3,7 @@ import Order from '@/models/orderModel';
 import {NextRequest , NextResponse} from 'next/server';
 import  {getToken} from 'next-auth/jwt'
 
-export async function GET(req : NextRequest) {
+export async function POST(req : NextRequest) {
     await dbConnect();
     try {
         const {id} = await req.json();

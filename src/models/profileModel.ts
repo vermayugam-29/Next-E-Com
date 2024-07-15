@@ -7,7 +7,7 @@ export interface PROFILE extends Document {
     phoneNumber : string,
     profilePhoto : string,
     addresses : ADDRESS[],
-    defaultAddress : ADDRESS,
+    defaultAddress : ADDRESS | null,
     dob : string,
     gender : string
 }
@@ -24,7 +24,7 @@ export const profileSchema : Schema<PROFILE> = new mongoose.Schema({
         ref : 'Address'
     }],
     defaultAddress : {
-        type : mongoose.Schema.Types.ObjectId,
+        type : mongoose.Schema.Types.ObjectId || null,
         ref : 'Address'
     },
     dob : {
@@ -36,6 +36,8 @@ export const profileSchema : Schema<PROFILE> = new mongoose.Schema({
         enum : ['Male' , 'Female' , 'Prefer Not to say'],
         trim : true,
     }
+},{
+    timestamps : true
 })
 
 

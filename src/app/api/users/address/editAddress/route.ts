@@ -1,14 +1,13 @@
 import dbConnect from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
-import {addressValidation} from '@/schemas/addressSchema'
-import { getToken } from "next-auth/jwt";
 import Address from "@/models/addressModel";
 
 export async function PUT(req : NextRequest) {
     await dbConnect();
 
     try {
-        const {addressId , houseNo , landmark , city , state , pincode} = await req.json();
+        const {addressId , houseNo , landmark , city , state , pincode , name , phoneNumber} 
+        = await req.json();
 
 
         if(!addressId) {
@@ -30,6 +29,21 @@ export async function PUT(req : NextRequest) {
             }) 
         }
 
+        if(address.deleted) {
+            return NextResponse.json({
+                success : false,
+                message : 'This address was deleted by you please add it again to edit'
+            }, {
+                status : 404
+            })
+        }
+
+        if(name) {
+            address.name = name;
+        }
+        if(phoneNumber) {
+            address.phoneNumber = phoneNumber;
+        }
         if(houseNo) {
             address.houseNo = houseNo;
         }

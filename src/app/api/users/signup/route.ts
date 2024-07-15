@@ -53,7 +53,8 @@ export async function POST(req : NextRequest) {
         const cart = await Cart.create(
             {
                 items : [],
-                totalAmount : 0
+                totalAmount : 0,
+                quantityOfItem : []
             }
         );
 

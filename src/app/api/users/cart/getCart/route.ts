@@ -3,43 +3,38 @@ import Cart from "@/models/cartModel";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-export const PUT = async(req : NextRequest) => {
+export const GET = async(req : NextRequest) => {
     await dbConnect();
 
     try {
         const token = await getToken({req});
         const cartId = token!.myCart;
 
-        const cart = await Cart.findById(cartId);
+        const cart = await Cart.findById(cartId)
+        .populate('items').populate('quantityOfItem.item').exec();
 
         if(!cart) {
             return NextResponse.json({
                 success : false,
-                message : 'No such cart found please provide a valid cartId',
-            },{
+                message : 'Please provide with a valid cart id to fectch details'
+            }, {
                 status : 404
             })
         }
 
-        cart.items = [];
-        cart.totalAmount = 0;
-        cart.quantityOfItem = [];
-
-        await cart.save();
-
         return NextResponse.json({
             success : true,
-            message : 'Your cart is empty',
+            message : 'Successfully fectched cart details',
             data : cart
-        },{
+        }, {
             status : 200
         })
     } catch (error : any) {
         return NextResponse.json({
             success : false,
-            message : 'Something went wrong while emptying the cart',
+            message: 'Something went wrong while fetching card details',
             error : error.message
-        } , {
+        }, {
             status : 500
         })
     }

@@ -30,6 +30,15 @@ export const PUT = async(req : NextRequest) => {
             })
         }
 
+        if(address.deleted) {
+            return NextResponse.json({
+                success : false,
+                message : 'This address was deleted by you please add it again to make it as default'
+            }, {
+                status : 404
+            })
+        }
+
         const token = await getToken({req});
         const {additionalInfo} = token!;
 

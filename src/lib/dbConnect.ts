@@ -1,27 +1,31 @@
-import mongoose from "mongoose";
-import dotenv from 'dotenv'
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
 dotenv.config();
 
-type ConnectedObject = {
-    isConnected? : number
+interface ConnectedObject {
+    isConnected: boolean;
 }
 
-const connection : ConnectedObject = {}
+let connection: ConnectedObject = {
+    isConnected: false,
+};
 
-async function dbConnect() : Promise<void> {
-    if(connection.isConnected){
+async function dbConnect(): Promise<void> {
+    if (connection.isConnected) {
         console.log('Already connected to database');
         return;
     }
 
     try {
-        const db = await mongoose.connect(process.env.MONGO_URL! , {
+        const db = await mongoose.connect(process.env.MONGO_URL!, {
         });
-        connection.isConnected = db.connections[0].readyState;
+
+        connection.isConnected = db.connections[0].readyState === 1;
 
         console.log('DB connected successfully');
     } catch (error) {
-        console.log('Error connecting to database');
+        console.error('Error connecting to database:', error);
         process.exit(1);
     }
 }

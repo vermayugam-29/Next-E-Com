@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import dbConnect from "@/lib/dbConnect"
 import Address from "@/models/addressModel";
 
-export async function GET(req : NextRequest) {
+export async function POST(req : NextRequest) {
     await dbConnect();
 
     try {
@@ -24,6 +24,15 @@ export async function GET(req : NextRequest) {
                 success : false,
                 message : 'Please provide with a valid address id'
             } , {
+                status : 404
+            })
+        }
+
+        if(address.deleted) {
+            return NextResponse.json({
+                success : false,
+                message : 'This address was deleted by you please add it again to view'
+            }, {
                 status : 404
             })
         }

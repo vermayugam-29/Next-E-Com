@@ -100,6 +100,8 @@ export const orderSchema: Schema<ORDER> = new mongoose.Schema({
     deliveredOn: {
         type: Date
     }
+},{
+    timestamps : true
 });
 
 

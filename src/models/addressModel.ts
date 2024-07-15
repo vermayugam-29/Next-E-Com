@@ -2,14 +2,27 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 
 export interface ADDRESS extends Document {
+    name: string,
+    phoneNumber : string,
     houseNo: string,
     landmark: string,
     city: string,
     state: string,
-    pincode: number
+    pincode: number,
+    deleted : boolean
 }
 
 export const addressSchema: Schema<ADDRESS> = new mongoose.Schema({
+    name : {
+        type : String,
+        required : true,
+        trim : true
+    },
+    phoneNumber : {
+        type : String,
+        required : true,
+        trim : true
+    },
     houseNo: {
         type: String,
         required: true,
@@ -32,7 +45,13 @@ export const addressSchema: Schema<ADDRESS> = new mongoose.Schema({
     pincode: {
         type: Number,
         required: true
+    },
+    deleted : {
+        type : Boolean,
+        default : false
     }
+},{
+    timestamps : true
 })
 
 const Address = mongoose.models.Address as mongoose.Model<ADDRESS> ||

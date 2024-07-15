@@ -21,6 +21,9 @@ export async function middleware(request: NextRequest) {
   let ratingsUrl = '/ratings'
   let userUrl = '/api/users'
 
+  //order middlewares pending 
+  //and also write clean code later
+
 
   /********************************************************************************** 
    **************************ITEMS MIDDLEWARE****************************************
@@ -88,6 +91,25 @@ export async function middleware(request: NextRequest) {
     !url.pathname.startsWith(`${userUrl}/forgotPassword`) &&
     !url.pathname.startsWith(`${userUrl}/signup`) 
   ) {
+    if(url.pathname.startsWith(`${userUrl}/cart`)) {
+      if(!token) {
+        return NextResponse.json({
+          success : false,
+          message : 'Please login to continue with this service'
+        }, {
+          status : 404
+        })
+      } else if(role === 'Admin') {
+        return NextResponse.json({
+          success : false,
+          message : 'This service is only for customers'
+        }, {
+          status : 404
+        })
+      }
+
+      return NextResponse.next();
+    }
     if (!token || !userId || !role) {
       return NextResponse.redirect(new URL('/log-in', request.url));
     }

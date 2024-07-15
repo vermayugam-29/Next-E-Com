@@ -1,6 +1,8 @@
 import  { z } from 'zod';
 
 export const addressValidation = z.object({
+    name : z.string(),
+    phoneNumber : z.string(),
     houseNo : z.string(),
     landmark : z.string(),
     city : z.string(),

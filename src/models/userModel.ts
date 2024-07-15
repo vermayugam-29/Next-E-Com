@@ -61,6 +61,8 @@ export const userSchema : Schema<USER> =  new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Chat'
     }]
+},{
+    timestamps : true
 })
 
 const User =  mongoose.models.User as mongoose.Model<USER> || 
