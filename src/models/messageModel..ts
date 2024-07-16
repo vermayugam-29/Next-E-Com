@@ -1,7 +1,6 @@
 import mongoose , {Schema , Document} from 'mongoose';
-import { USER , userSchema} from './userModel';
+import { USER } from './userModel';
 
-// mongoose.model('User' , userSchema);
 
 export interface MESSAGE extends Document {
     user : USER,

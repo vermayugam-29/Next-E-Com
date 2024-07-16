@@ -17,7 +17,7 @@ export async function PUT(req : NextRequest) {
         if(!id) {
             return NextResponse.json({
                 success : false,
-                message : 'Please provide with a id',
+                message : 'Please provide with a order id',
             }, {
                 status : 400
             })
@@ -74,7 +74,11 @@ export async function PUT(req : NextRequest) {
         order.deliveredOn = new Date(Date.now());
         order.deliveredBy = userId!;
 
-        await order.save();
+        await order.save()
+        .then(order => {
+            order.populate('items quantityOfItem.item orderBy shippingAddress acceptedBy deliveredBy')
+        })
+        .catch(err => console.log(err))
 
         const items = order.items;
 

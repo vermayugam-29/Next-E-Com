@@ -1,7 +1,6 @@
 import mongoose , {Schema , Document} from 'mongoose';
-import { MESSAGE , messageSchema } from './messageModel.';
+import { MESSAGE  } from './messageModel.';
 
-// mongoose.model('Message' , messageSchema);
 
 export interface CHAT extends Document {
     messages : MESSAGE[]

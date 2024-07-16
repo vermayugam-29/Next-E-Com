@@ -13,7 +13,8 @@ export const customerProtectedRoutes = [
 export const protectedRoutes = [
     '/api/users/changePassword', '/api/users/chats',
     '/api/users/deactivateAccount', '/api/users/profile',
-    '/api/users/logOut'
+    '/api/users/logOut' , '/api/users/orders/getOrderDetails',
+    '/api/users/orders/getAllOrders'
 ]
 
 export const authProtected = [

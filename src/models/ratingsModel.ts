@@ -1,9 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
-import {USER , userSchema} from "./userModel";
-import {ITEM , itemSchema}  from "./itemModel";
+import {USER} from "./userModel";
+import {ITEM }  from "./itemModel";
 
-mongoose.model('User' , userSchema);
-mongoose.model('Item' , itemSchema);
 
 export interface RATING extends Document {
     postedBy: USER,

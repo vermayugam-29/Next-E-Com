@@ -1,7 +1,6 @@
 import dbConnect from '@/lib/dbConnect';
 import Order from '@/models/orderModel';
 import {NextRequest , NextResponse} from 'next/server';
-import  {getToken} from 'next-auth/jwt'
 
 export async function POST(req : NextRequest) {
     await dbConnect();
@@ -31,15 +30,15 @@ export async function POST(req : NextRequest) {
 
 
         if(order.status === 'Pending') {
-            await order.populate('items orderBy');
+            await order.populate('items orderBy quantityOfItem.item');
         } else if(order.status === 'Cancelled') {
-            await order.populate('items orderBy cancelledBy');
+            await order.populate('items orderBy cancelledBy quantityOfItem.item');
         } else if(order.status === 'Rejected') {
-            await order.populate('items orderBy rejectedBy');
+            await order.populate('items orderBy rejectedBy quantityOfItem.item');
         } else if(order.status === 'Accepted') {
-            await order.populate('items orderBy acceptedBy');
+            await order.populate('items orderBy acceptedBy quantityOfItem.item');
         } else if(order.status === 'Delivered') {
-            await order.populate('items orderBy acceptedBy deliveredBy');
+            await order.populate('items orderBy acceptedBy deliveredBy quantityOfItem.item');
         }
         
 

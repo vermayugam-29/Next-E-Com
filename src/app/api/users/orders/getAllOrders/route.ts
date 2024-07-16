@@ -7,23 +7,22 @@ export async function GET(req : NextRequest) {
     await dbConnect();
     try {
         const token = await getToken({req});
-        const userId = token?._id;
-        const role = token?.accountType;
+        const userId = token!._id;
+        const role = token!.accountType;
 
-        if(!userId || role) { 
-            return NextResponse.json({
-                success : false,
-                message : 'Please login to continue'
-            },{
-                status : 404
-            })
-        }
+
         
         let orders;
         if(role === 'Admin') {
-            orders = await Order.find({});
+            orders = await Order.find({})
+            .populate('items')
+            .populate('quantityOfItem.item')
+            .populate('orderBy').exec();
         } else if(role === 'Customer') {
-            orders = await Order.find({orderBy : userId});
+            orders = await Order.find({orderBy : userId})
+            .populate('items')
+            .populate('quantityOfItem.item')
+            .populate('orderBy').exec();
         }
 
 
