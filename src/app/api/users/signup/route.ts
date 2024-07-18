@@ -78,7 +78,7 @@ export async function POST(req : NextRequest) {
         const newUser = await User.create(
             {
                 name , email , password : hashedPassword ,
-                image : imageUrl , accountType, myCart : cart._id,
+                accountType, myCart : cart._id,
                 additionalInfo : profile._id , chat : chat._id
             }
         );

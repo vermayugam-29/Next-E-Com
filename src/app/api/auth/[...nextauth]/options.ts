@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
                     }
 
                     if (await compare(credentials.password, user.password)) {
-                        return user;
+                        return user.populate('additionalInfo');
                     } else {
                         throw new Error('Incorrect password');
                     }
@@ -66,6 +66,7 @@ export const authOptions: NextAuthOptions = {
                 token.additionalInfo = user.additionalInfo;
                 token.name = user.name;
                 token.chat = user.chat;
+                token.profilePhoto = user.additionalInfo?.profilePhoto;
             }
 
 
@@ -80,13 +81,14 @@ export const authOptions: NextAuthOptions = {
                 session.user.additionalInfo = token.additionalInfo;
                 session.user.name = token.name;
                 session.user.chat = token.chat;
+                session.user.profilePhoto = token.profilePhoto;
             }
 
             return session;
         }
     },
     pages: {
-        signIn : 'log-in',
+        signIn : 'login',
     },
     session: {
         strategy : 'jwt'
