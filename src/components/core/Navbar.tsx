@@ -1,15 +1,49 @@
 'use client'
-import React from 'react'
+import { top100Films } from '@/data/data'
+import * as React from 'react';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const Navbar = () => {
+
+
     return (
-        <div className="navbar bg-base-100">
+        <form className="navbar bg-base-100">
             <div className="flex-1">
-                <a className="btn btn-ghost text-xl">RPR</a>
+                <a href={'/'} className="btn btn-ghost text-xl">RPR</a>
             </div>
-            <div className="">
-                <input type="text" placeholder="Search" className="input input-bordered w-24 mr-14 md:w-auto" />
+
+
+            <div  className='w-[100%] flex justify-center items-center'>
+                <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={top100Films}
+                    sx={{ width: 500 }}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="Search Items"
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderWidth: '5px', // Change border size here
+                                    },
+                                    '&:hover fieldset': {
+                                        borderWidth: '5px', // Change border size on hover
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderWidth: '2px', // Change border size when focused
+                                    },
+                                },
+                            }}
+                        />
+                    )}
+                />
+
             </div>
+
+
 
             <div className="flex-none">
                 <div className="dropdown dropdown-end">
@@ -64,7 +98,7 @@ const Navbar = () => {
                     </ul>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 

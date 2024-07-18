@@ -8,7 +8,6 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion";
-import Yugam from '../../../public/assets/Profile Picture Me.jpg'
 
 export const AnimatedTooltip = ({
   items,

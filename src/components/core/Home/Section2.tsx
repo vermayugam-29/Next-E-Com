@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import Card from './Card'
-import { people, productData, title } from '@/data/products'
+import { adminDetails, productData, title } from '@/data/data'
 import { TextGenerateEffect } from "../../ui/text-generate-effect";
 import { WavyBackground } from '@/components/ui/wavy-background';
 import { AnimatedTooltip } from '@/components/ui/animated-tooltip';
@@ -34,7 +34,7 @@ const Section2 = () => {
               Discover the talented professionals who provide you with quality products
               </p>
             <div className="flex flex-row items-center justify-center mb-10 w-full">
-                <AnimatedTooltip items={people} />
+                <AnimatedTooltip items={adminDetails} />
             </div>
         </WavyBackground>
     </div>
