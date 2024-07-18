@@ -13,7 +13,7 @@ const orderId = require('order-id')(process.env.ORDER_SECRET)
 
 export interface ORDER extends Document {
     items: ITEM[],
-    quantityOfItem : QUANTITY,
+    quantityOfItem : QUANTITY[],
     orderBy: USER | string,
     orderId: string | number,
     orderTo: string[],
