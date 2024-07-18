@@ -1,7 +1,7 @@
-import { Profile, User } from "@/types/stateTypes";
+import { Profile , UserToken } from "@/types/stateTypes";
 import { atom } from "recoil";
 
-export const user = atom<User | null>({
+export const user = atom<UserToken | null>({
     key : 'user',
     default : null
 })
