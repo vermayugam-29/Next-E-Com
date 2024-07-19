@@ -11,7 +11,7 @@ export const PUT = async(req : NextRequest) => {
     await dbConnect();
 
     try {
-        const { email , password } = logInValidation.parse(req.json());
+        const { email , password } = logInValidation.parse(await req.json());
 
         const user = await User.findOne( {email : email} );
 

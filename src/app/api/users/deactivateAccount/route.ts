@@ -10,16 +10,8 @@ export async function POST(req : NextRequest) {
     try {
         const { password } = await req.json();
         const token = await getToken({req});
-        const userId = token?._id;
+        const userId = token!._id;
 
-        if(!userId) {
-            return NextResponse.json({
-                success : false,
-                message : 'Please login to continue'
-            } ,{
-                status : 404
-            } )
-        }
 
         const user = await User.findById(userId);
         if(!user) {

@@ -22,7 +22,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <RecoilRoot>
-
           <Toaster />
           <Navbar />
           {children}

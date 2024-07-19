@@ -12,16 +12,9 @@ export const PUT = async(req : NextRequest) => {
         const { oldPassword} = await req.json();
         const {password} = passwordValidation.parse(await req.json());
         const token = await getToken({req});
-        const userId = token?._id;
+        const userId = token!._id;
 
-        if(!userId) {
-            return NextResponse.json({
-                success : false,
-                message : 'No user found to change password',
-            } , {
-                status : 400
-            })
-        }
+       
 
         const user = await User.findById(userId);
         if(!user) {
