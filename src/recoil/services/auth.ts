@@ -27,7 +27,6 @@ export const generateOtp = async(email : string , setLoading : (loading : boolea
     setLoading(false);
 }
 
-
 export const signUp = async(data : any , setLoading : (loading : boolean) => void) : Promise<void> => {
     setLoading(true);
 
@@ -50,7 +49,6 @@ export const signUp = async(data : any , setLoading : (loading : boolean) => voi
     setLoading(false);
 }
 
-
 export const reactivateAccount = async(data : any , setLoading : (loading : boolean) => void) => {
 
     setLoading(true);
@@ -71,7 +69,6 @@ export const reactivateAccount = async(data : any , setLoading : (loading : bool
 
     setLoading(false);
 }
-
 
 export const deactivateAccount = async(password : string , setLoading : (loading : boolean) => void) => {
 
@@ -94,7 +91,6 @@ export const deactivateAccount = async(password : string , setLoading : (loading
     setLoading(false);
 } 
 
-
 export const changePassword = async(data : any , setLoading : (loading : boolean) => void) => {
 
     setLoading(true);
@@ -115,7 +111,6 @@ export const changePassword = async(data : any , setLoading : (loading : boolean
 
     setLoading(false);
 }
-
 
 export const logOut = async(setLoading : (loading : boolean) => void ,
  setUser : SetterOrUpdater<User | null>) : Promise<void> => {
@@ -139,6 +134,5 @@ export const logOut = async(setLoading : (loading : boolean) => void ,
 
     setLoading(false);
 }
-
 
 //forgot password
