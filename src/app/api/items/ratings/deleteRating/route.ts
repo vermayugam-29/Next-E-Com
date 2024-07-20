@@ -1,7 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import Item from "@/models/itemModel";
 import RatingAndReviews from "@/models/ratingsModel";
-import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export const DELETE = async(req : NextRequest) => {

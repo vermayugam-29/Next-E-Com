@@ -6,7 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userDetails, userProfile } from '@/recoil/atoms/userState'
 import Link from 'next/link';
-import { userCart } from '@/recoil/atoms/cart';
+import { userCart } from '@/recoil/atoms/cartState';
 import { allItems } from '@/recoil/atoms/itemState';
 
 const Navbar = () => {
