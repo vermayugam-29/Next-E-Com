@@ -32,12 +32,12 @@ const Navbar = () => {
             </div>
 
 
-            <div className='w-[100%] flex justify-center items-center'>
+            <div className='w-[50%] flex justify-center items-center'>
                 <Autocomplete
                     disablePortal
                     id="combo-box-demo"
                     options={items}
-                    sx={{ width: 500 }}
+                    sx={{ width: 500}}
                     renderInput={(params) => (
                         <TextField
                             {...params}
@@ -111,7 +111,7 @@ const Navbar = () => {
                 </div>
                 {
                     !user ?
-                        <button>
+                        <button className="w-10">
                             <Link href={'/login'}>
                                 Login
                             </Link>

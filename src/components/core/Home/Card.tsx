@@ -25,9 +25,9 @@ const Card = ({ name, description, image }: any) => {
                 <CardItem translateZ="100" className="w-full mt-4">
                     <Image
                         src={image}
-                        height="1000"
+                        height="1200"
                         width="1000"
-                        className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
+                        className="h-90 w-full object-cover rounded-xl group-hover/card:shadow-xl"
                         alt="thumbnail"
                     />
                 </CardItem>
@@ -35,7 +35,7 @@ const Card = ({ name, description, image }: any) => {
                     <CardItem
                         translateZ={20}
                         as={Link}
-                        href={'/items'}
+                        href={'/items/all'}
                         // target="__blank"
                         className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
                     >
@@ -45,10 +45,10 @@ const Card = ({ name, description, image }: any) => {
                     <CardItem
                         translateZ={20}
                         as={Link}
-                        href={'/signUp'}
+                        href={'/items/all'}
                         className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
                     >
-                        Sign up
+                        Explore All Products
                     </CardItem>
                 </div>
             </CardBody>
