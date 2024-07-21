@@ -7,12 +7,11 @@ import { otpValidation } from "@/schemas/otpSchema";
 
 export async function POST(req : NextRequest) {
 
-    //await 
-    dbConnect();
+    await dbConnect();
 
     try {
-        const data = await req.json();
-        const { email } = otpValidation.parse(data);
+        const { email } = await req.json();
+
 
 
 

@@ -116,3 +116,18 @@ export interface Message {
     deleteType : string,
     deletedBy : User
 }
+//login
+export interface Login {
+    email : string,
+    password : string
+}
+//signUp
+export interface SignUp {
+    firstName : string,
+    lastName : string,
+    email : string,
+    password : string,
+    confirmPassword : string,
+    otp : string | number,
+    accountType : string
+}

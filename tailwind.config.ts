@@ -34,6 +34,26 @@ const config: Config = {
       boxShadow: {
         input: `0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)`,
       },
+      colors: {
+        richblack: {
+          5: "#F1F2FF",
+          25: "#DBDDEA",
+          100: "#AFB2BF",
+          200: "#999DAA",
+          700: "#2C333F",
+          800: "#161D29",
+          900: "#000814",
+        },
+        blue: {
+          100: "#47A5C5",
+        },
+        pink: {
+          200: "#EF476F",
+        },
+        yellow: {
+          50: "#FFD60A",
+        },
+      }
     },
   },
   plugins: [
