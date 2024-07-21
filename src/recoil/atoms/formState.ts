@@ -7,7 +7,6 @@ export const signUpDefault : SignUp = {
     email : '' ,
     password : '',
     confirmPassword : '',
-    otp : '',
     accountType : 'Customer'
 }
 

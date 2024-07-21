@@ -16,6 +16,7 @@ const page = () => {
   const [data , setData] = useRecoilState(SignUpformState);
   const [loading, setLoading] = useRecoilState(loadingState);
 
+
   useEffect(() => {
     if (user) {
       router.push('/');
@@ -26,7 +27,8 @@ const page = () => {
       toast.error(`Please sign up again something went wrong`)
       return;
     }
-    generateOtp(data.email, setLoading , router , setData);
+    const email = data.accountType === 'Admin' ? process.env.NEXT_PUBLIC_EMAIL! : data.email;
+    generateOtp(email, setLoading , router , setData);
 
   }, [user, router])
 

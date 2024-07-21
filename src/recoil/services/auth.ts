@@ -5,25 +5,23 @@ import { SetterOrUpdater } from "recoil";
 import { signUpDefault } from "../atoms/formState";
 
 
-export const generateOtp = async(email : string , setLoading : (loading : boolean) => void ,
- router : any , setData : SetterOrUpdater<SignUp>
-) : Promise<void> => {
+export const generateOtp = async (email: string, setLoading: (loading: boolean) => void,
+    router: any, setData: SetterOrUpdater<SignUp>
+): Promise<void> => {
 
     setLoading(true);
-    
-    try {
-        const response = await axios.post('/api/otp' , {email});
 
-        if(!response.data.success) {
+    try {
+        const response = await axios.post('/api/otp', { email });
+
+        if (!response.data.success) {
             throw new Error(response.data.message);
         }
         toast.success(`${response.data.message}`);
-        router.push('/login');
-        console.log(response.data);
-    } catch (err : any) {
+    } catch (err: any) {
         router.push('/signUp');
         setData(signUpDefault);
-        if(err.response && err.response.data && err.response.data.message) {
+        if (err.response && err.response.data && err.response.data.message) {
             toast.error(`${err.response.data.message}`)
         } else {
             toast.error(`${err.response.data.error}`)
@@ -33,19 +31,20 @@ export const generateOtp = async(email : string , setLoading : (loading : boolea
     setLoading(false);
 }
 
-export const signUp = async(data : SignUp , setLoading : (loading : boolean) => void) : Promise<void> => {
+export const signUp = async (data: SignUp, otp: string[], setLoading: SetterOrUpdater<boolean>, router: any
+    
+) => {
     setLoading(true);
-
     try {
-        const response = await axios.post('/api/users/signup' , {data});
-        if(!response.data.success) {
+        const response = await axios.post('/api/users/signup', { data: data , otp : otp.join('') });
+        if (!response.data.success) {
             throw new Error(response.data.message);
         }
 
         toast.success(`${response.data.message}`);
-        console.log(response.data);
-    } catch (err : any) {
-        if(err.response && err.response.data && err.response.data.message) {
+        router.push('/login');
+    } catch (err: any) {
+        if (err.response && err.response.data && err.response.data.message) {
             toast.error(`${err.response.data.message}`)
         } else {
             toast.error(`${err.response.data.error}`)
@@ -55,18 +54,18 @@ export const signUp = async(data : SignUp , setLoading : (loading : boolean) => 
     setLoading(false);
 }
 
-export const reactivateAccount = async(data : Login , setLoading : (loading : boolean) => void) => {
+export const reactivateAccount = async (data: Login, setLoading: (loading: boolean) => void) => {
 
     setLoading(true);
 
     try {
-        const response = await axios.put('/api/users/reactivateAccount' , {data});
-        if(!response.data.success) {
+        const response = await axios.put('/api/users/reactivateAccount', { data });
+        if (!response.data.success) {
             throw new Error(response.data.message);
         }
         toast.success(`${response.data.message}`);
-    } catch (err : any) {
-        if(err.response && err.response.data && err.response.data.message) {
+    } catch (err: any) {
+        if (err.response && err.response.data && err.response.data.message) {
             toast.error(`${err.response.data.message}`)
         } else {
             toast.error(`${err.response.data.error}`)
@@ -76,39 +75,18 @@ export const reactivateAccount = async(data : Login , setLoading : (loading : bo
     setLoading(false);
 }
 
-export const deactivateAccount = async(password : string , setLoading : (loading : boolean) => void) => {
+export const deactivateAccount = async (password: string, setLoading: (loading: boolean) => void) => {
 
     setLoading(true);
 
     try {
-        const response = await axios.post('/api/users/deactivateAccount' , password);
-        if(!response.data.success) {
+        const response = await axios.post('/api/users/deactivateAccount', password);
+        if (!response.data.success) {
             throw new Error(response.data.message);
         }
         toast.success(`${response.data.message}`);
-    } catch (err : any) {
-        if(err.response && err.response.data && err.response.data.message) {
-            toast.error(`${err.response.data.message}`)
-        } else {
-            toast.error(`${err.response.data.error}`)
-        }
-    }
-
-    setLoading(false);
-} 
-
-export const changePassword = async(data : any , setLoading : (loading : boolean) => void) => {
-
-    setLoading(true);
-
-    try {
-        const response = await axios.put('/api/users/changePassword' , data);
-        if(!response.data.success) {
-            throw new Error(response.data.message);
-        }
-        toast.success(`${response.data.message}`);
-    } catch (err : any) {
-        if(err.response && err.response.data && err.response.data.message) {
+    } catch (err: any) {
+        if (err.response && err.response.data && err.response.data.message) {
             toast.error(`${err.response.data.message}`)
         } else {
             toast.error(`${err.response.data.error}`)
@@ -118,20 +96,41 @@ export const changePassword = async(data : any , setLoading : (loading : boolean
     setLoading(false);
 }
 
-export const logOut = async(setLoading : (loading : boolean) => void ,
- setUser : SetterOrUpdater<User | null>) : Promise<void> => {
+export const changePassword = async (data: any, setLoading: (loading: boolean) => void) => {
+
+    setLoading(true);
+
+    try {
+        const response = await axios.put('/api/users/changePassword', data);
+        if (!response.data.success) {
+            throw new Error(response.data.message);
+        }
+        toast.success(`${response.data.message}`);
+    } catch (err: any) {
+        if (err.response && err.response.data && err.response.data.message) {
+            toast.error(`${err.response.data.message}`)
+        } else {
+            toast.error(`${err.response.data.error}`)
+        }
+    }
+
+    setLoading(false);
+}
+
+export const logOut = async (setLoading: (loading: boolean) => void,
+    setUser: SetterOrUpdater<User | null>): Promise<void> => {
 
     setLoading(true);
 
     try {
         const response = await axios.put('/api/users/logOut');
-        if(!response.data.success) {
+        if (!response.data.success) {
             throw new Error(response.data.message);
         }
         toast.success(`${response.data.message}`);
         setUser(null);
-    } catch (err : any) {
-        if(err.response && err.response.data && err.response.data.message) {
+    } catch (err: any) {
+        if (err.response && err.response.data && err.response.data.message) {
             toast.error(`${err.response.data.message}`)
         } else {
             toast.error(`${err.response.data.error}`)

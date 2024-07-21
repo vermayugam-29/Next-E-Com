@@ -3,7 +3,8 @@ import { z } from 'zod';
 export const signUpValidation = z.object({
     // image : z.string().url(),
 
-    name: z.string().max(25, { message: 'Name cannot exceed 25 characters' }),
+    firstName: z.string().max(20, { message: 'First Name cannot exceed 20 characters' }),
+    lastName : z.string().max(20, { message: 'Last Name cannot exceed 20 characters' }),
     
     email: z.string().email({message : 'Please enter a valid email id'}),
 

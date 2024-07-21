@@ -128,6 +128,5 @@ export interface SignUp {
     email : string,
     password : string,
     confirmPassword : string,
-    otp : string | number,
     accountType : string
 }

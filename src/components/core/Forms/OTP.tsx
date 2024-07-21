@@ -3,14 +3,15 @@ import { SignUpformState } from '@/recoil/atoms/formState';
 import { loadingState } from '@/recoil/atoms/loadingState';
 import { signUp } from '@/recoil/services/auth';
 import { SignUp } from '@/types/stateTypes';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
+import { useRouter } from 'next/navigation';
 
 const OTP = () => {
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
-  const [data , setData] = useRecoilState(SignUpformState);
-  const [loading , setLoading] = useRecoilState(loadingState);
+  const [data, setData] = useRecoilState(SignUpformState);
+  const [loading, setLoading] = useRecoilState(loadingState);
+  const router = useRouter();
 
 
 
@@ -42,21 +43,16 @@ const OTP = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setData((prev : SignUp) => {
-      return {
-        ...prev , 
-        otp : otp.join("")
-      }
-    })
-    signUp(data , setLoading);
+    signUp(data, otp, setLoading, router);
   };
+
 
 
   return (
     <form onSubmit={handleSubmit} className="w-[100%] h-[80vh] flex flex-col items-center justify-center">
-        <div className='w-fit-content mb-[70px] text-2xl font-bold'>
-            <h1>Enter the OTP sent on your email</h1>
-        </div>
+      <div className='w-fit-content mb-[70px] text-2xl font-bold'>
+        <h1>Enter the OTP sent on your email</h1>
+      </div>
       <div className="flex space-x-2 mb-4">
         {otp.map((data, index) => (
           <input

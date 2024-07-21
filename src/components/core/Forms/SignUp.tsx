@@ -37,17 +37,17 @@ export function SignupFormDemo() {
 
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
-      <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
+      <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200 text-center">
         Welcome to RPR Steel Works
       </h2>
-      <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
+      <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300 text-center">
         All fields are necessary to signup for RPR account
       </p>
 
       <form
         className="my-8" onSubmit={handleSubmit}>
 
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mt-[-50px] mr-5">
           <div className='flex bg-black-100 my-6 rounded-full p-1 gap-4 max-w-max'>
             <button
             type="button"
