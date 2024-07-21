@@ -5,15 +5,65 @@ import { Input } from "../../ui/input";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useRecoilState } from "recoil";
+import { loginFormState } from "@/recoil/atoms/formState";
+import { Login } from "@/types/stateTypes";
+import { loadingState } from "@/recoil/atoms/loadingState";
+import { signIn } from 'next-auth/react'
+import toast from "react-hot-toast";
+import { isAxiosError } from "axios";
+
 
 export function LogIn() {
 
+  const [data, setData] = useRecoilState<Login>(loginFormState);
+  const [loading, setLoading] = useRecoilState(loadingState);
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push('/otp')
+
+    setLoading(true);
+    try {
+      const response = await signIn(
+        'credentials', {
+        redirect: false,
+        email: data.email,
+        password: data.password
+      }
+      );
+
+      if (response?.error) {
+        toast.error(`${response.error}`);
+      } else {
+        toast.success(`Login Successfully`);
+        router.push('/');
+      }
+    } catch (error: any) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+        console.error("An error occurred:", error.response?.data.message);
+      } else if (error instanceof Error) {
+        console.error("An error occurred:", error.message);
+      } else {
+        toast.error("An unknown error occurred");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setData((prev: Login) => {
+      return {
+        ...prev,
+        [name]: value
+      }
+    });
+  }
 
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
@@ -24,15 +74,23 @@ export function LogIn() {
         Please login to continue
       </p>
 
-      <form 
-       className="my-8" onSubmit={handleSubmit}>
+      <form
+        className="my-8" onSubmit={handleSubmit}>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
-          <Input required id="email" placeholder="yugam@gmail.com" type="email" />
+          <Input
+            onChange={changeHandler}
+            name='email'
+            value={data.email}
+            required id="email" placeholder="yugam@gmail.com" type="email" />
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
-          <Input id="password" placeholder="••••••••" type="password" />
+          <Input
+            name='password'
+            onChange={changeHandler}
+            value={data.password}
+            id="password" placeholder="••••••••" type="password" />
         </LabelInputContainer>
 
         <button

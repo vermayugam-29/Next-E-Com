@@ -5,6 +5,8 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/core/Navbar";
 import { RecoilRoot } from "recoil";
+import Head from "next/head";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,11 +22,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <title>RPR</title>
+        <meta name="description" content="Description of your app" />
+      </Head>
       <body className={inter.className}>
         <RecoilRoot>
-          <Toaster />
-          <Navbar />
-          {children}
+          <Providers>
+            <Toaster />
+            <Navbar />
+            {children}
+          </Providers>
         </RecoilRoot>
       </body>
     </html>

@@ -1,8 +1,10 @@
 import mongoose , {Schema , Document} from 'mongoose'
 import {ORDER } from './orderModel';
 import {CART } from './cartModel'
-import { PROFILE } from './profileModel';
+import { PROFILE , profileSchema } from './profileModel';
 import { CHAT } from './chatModel';
+
+// mongoose.models.Profile || mongoose.model('Profile' , profileSchema)
 
 export interface USER extends Document {
     name : string,

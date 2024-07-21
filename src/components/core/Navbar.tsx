@@ -15,7 +15,6 @@ const Navbar = () => {
 
     const user = useRecoilValue(userDetails);
     const [cart, setCart] = useRecoilState(userCart);
-    const profile = useRecoilValue(userProfile);
     const items = useRecoilValue(allItems);
 
     useEffect(() => {
@@ -122,7 +121,7 @@ const Navbar = () => {
                                 <div className="w-10 rounded-full">
                                     <img
                                         alt="Tailwind CSS Navbar component"
-                                        src={profile!.profilePhoto} />
+                                        src={user!.profilePhoto} />
                                 </div>
                             </div>
                             <ul

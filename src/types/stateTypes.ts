@@ -15,12 +15,14 @@ export interface Item {
 //user 
 export interface UserToken {
     _id : string,
+    email : string,
     name : string,
     accountType : string,
-    myCart : Cart,
-    myOrders : Order[],
+    myCart : string,
+    myOrders : string[],
     additionalInfo : Profile,
-    // chat : Chat 
+    profilePhoto : string
+    chat : string[] 
 }
 
 export interface User {
@@ -60,13 +62,15 @@ export interface Order {
 }
 //profile
 export interface Profile {
+    createdAt : string | Date ,
+    updatedAt : string | Date,
     _id : string,
-    phoneNumber : string | number,
+    phoneNumber : string | number | null,
     profilePhoto : string,
-    addresses : Address[],
-    defaultAddress : Address | null,
-    dob : string | Date,
-    gender : string
+    addresses : Address[] | string[],
+    defaultAddress : Address | null | string,
+    dob : string | Date | null,
+    gender : string | null
 }
 //address
 export interface Address {
