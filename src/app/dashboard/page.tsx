@@ -16,6 +16,7 @@ const page = () => {
   const loading = useRecoilValue(loadingState);
   const router = useRouter();
 
+
   useEffect(() => {
     if(session?.status.toString() === 'authenticated') {
       if(session.data?.user) {

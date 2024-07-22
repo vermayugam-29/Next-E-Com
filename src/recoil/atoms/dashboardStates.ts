@@ -29,3 +29,8 @@ export const ordersClick = atom<boolean>({
     key : 'orders',
     default : false
 })
+
+export const selectedLinkState = atom<string>({
+    key : 'selectedLink',
+    default : 'Dashboard'
+})
