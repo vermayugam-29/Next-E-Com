@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
+import React, { useState } from "react";
+import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
 import {
   IconArrowLeft,
   IconBrandTabler,
@@ -11,14 +11,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { useRecoilState, useRecoilValue } from "recoil";
+import {useRecoilValue } from "recoil";
 import { userDetails } from "@/recoil/atoms/userState";
-import { useSession } from "next-auth/react";
-import { UserToken } from "@/types/stateTypes";
 
 function SidebarDemo() {
+  const user = useRecoilValue(userDetails);
 
-  const user  = useRecoilValue(userDetails);
 
   const links = [
     {
@@ -43,20 +41,6 @@ function SidebarDemo() {
       ),
     },
     {
-      label: "Add Items",
-      href: "#",
-      icon: (
-        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "View Orders",
-      href: "#",
-      icon: (
-        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
       label: "Logout",
       href: "#",
       icon: (
@@ -64,18 +48,21 @@ function SidebarDemo() {
       ),
     },
   ];
+
   const [open, setOpen] = useState(false);
   return (
     <div
       className={cn(
-        "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1 max-w-7xl mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden",
-        "h-[89vh]" // for your use case, use `h-screen` instead of `h-[60vh]`
+        "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-[100%] flex-1 mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden",
+        "h-[90vh]" // for your use case, use `h-screen` instead of `h-[60vh]`
       )}
     >
-      <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody  className="justify-between gap-10">
+      <Sidebar open={open} setOpen={setOpen} animate={false}>
+        <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto">
-            {open ? <Logo /> : <LogoIcon />}
+            <>
+              <Logo />
+            </>
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
@@ -134,26 +121,12 @@ export const LogoIcon = () => {
 };
 
 // Dummy dashboard component with content
-export const Dashboard = () => {
+const Dashboard = () => {
   return (
     <div className="flex flex-1">
       <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
-        <div className="flex gap-2">
-          {[...new Array(4)].map((i) => (
-            <div
-              key={"first-array" + i}
-              className="h-20 w-full rounded-lg  bg-gray-100 dark:bg-neutral-800 animate-pulse"
-            ></div>
-          ))}
-        </div>
-        <div className="flex gap-2 flex-1">
-          {[...new Array(2)].map((i) => (
-            <div
-              key={"second-array" + i}
-              className="h-full w-full rounded-lg  bg-gray-100 dark:bg-neutral-800 animate-pulse"
-            ></div>
-          ))}
-        </div>
+        
+        
       </div>
     </div>
   );

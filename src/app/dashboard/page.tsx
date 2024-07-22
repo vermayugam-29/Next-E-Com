@@ -1,6 +1,6 @@
 'use client'
 import Loading from '@/components/loading/Loading';
-import SidebarDemo, { Dashboard } from '@/components/profile/Dashboard'
+import SidebarDemo from '@/components/profile/Dashboard'
 import { loadingState } from '@/recoil/atoms/loadingState';
 import { userDetails } from '@/recoil/atoms/userState';
 import { UserToken } from '@/types/stateTypes';
