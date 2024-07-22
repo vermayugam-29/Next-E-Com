@@ -1,6 +1,7 @@
 import mongoose , {Schema , Document} from 'mongoose';
-import { USER } from './userModel';
+import { USER, userSchema } from './userModel';
 
+// mongoose.models.User || mongoose.model('User' , userSchema);
 
 export interface MESSAGE extends Document {
     user : USER,
@@ -37,6 +38,6 @@ export const messageSchema : Schema<MESSAGE> = new mongoose.Schema({
 })
 
 const Message = mongoose.models.Message as mongoose.Model<MESSAGE> ||
-                mongoose.model('Message' , messageSchema);
+                mongoose.model<MESSAGE>('Message' , messageSchema);
 
 export default Message;

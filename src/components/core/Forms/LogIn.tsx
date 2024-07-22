@@ -37,8 +37,8 @@ export function LogIn() {
       if (response?.error) {
         toast.error(`${response.error}`);
       } else {
-        toast.success(`Login Successfully`);
         router.push('/');
+        toast.success(`Login Successfully`);
       }
     } catch (error: any) {
       if (isAxiosError(error)) {

@@ -1,15 +1,19 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import User, { USER } from './userModel';
-import Item, { ITEM } from './itemModel'
+import User, { USER, userSchema } from './userModel';
+import Item, { ITEM, itemSchema } from './itemModel'
 import dotenv from 'dotenv'
 import mailSender from '@/utils/mailSender';
 import orderDetailTemplate from '../../mailTemplates/orderMail';
-import { ADDRESS } from './addressModel';
+import { ADDRESS, addressSchema } from './addressModel';
 import { QUANTITY } from './cartModel';
 import { v4 as uuidv4 } from 'uuid';
 dotenv.config();
 const orderId = require('order-id')(process.env.ORDER_SECRET)
 
+
+// mongoose.models.Item || mongoose.model('Item' , itemSchema);
+// mongoose.models.User || mongoose.model('User' , userSchema);
+// mongoose.models.Address || mongoose.model('Address' , addressSchema);
 
 export interface ORDER extends Document {
     items: ITEM[],
@@ -156,5 +160,5 @@ orderSchema.post('save', async function(doc, next) {
     }
 });
 
-const Order = mongoose.models.Order as mongoose.Model<ORDER> || mongoose.model('Order', orderSchema);
+const Order = mongoose.models.Order as mongoose.Model<ORDER> || mongoose.model<ORDER>('Order', orderSchema);
 export default Order

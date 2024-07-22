@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import toast from 'react-hot-toast'
+import { SignUp } from '@/types/stateTypes'
 
 const page = () => {
   const user = useRecoilValue(userDetails);
@@ -23,14 +24,20 @@ const page = () => {
       return;
     }
     if (!data || data.email === '') {
-      router.push('/signUp');
-      toast.error(`Please sign up again something went wrong`)
-      return;
+      if(sessionStorage.getItem('signupForm')) {
+        const sessionForm : SignUp = JSON.parse(sessionStorage.getItem('signupForm')!) as SignUp;
+        setData(sessionForm);
+      } else {
+        router.push('/signUp');
+        toast.error(`Please sign up again something went wrong`)
+        return;
+      }
     }
+    
     const email = data.accountType === 'Admin' ? process.env.NEXT_PUBLIC_EMAIL! : data.email;
     generateOtp(email, setLoading , router , setData);
 
-  }, [user, router])
+  }, [user, router , data])
 
 
   if (loading) {

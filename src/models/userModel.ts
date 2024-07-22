@@ -1,10 +1,14 @@
 import mongoose , {Schema , Document} from 'mongoose'
-import {ORDER } from './orderModel';
-import {CART } from './cartModel'
+import {ORDER, orderSchema } from './orderModel';
+import {CART, cartSchema } from './cartModel'
 import { PROFILE , profileSchema } from './profileModel';
-import { CHAT } from './chatModel';
+import { CHAT, chatSchema } from './chatModel';
 
-// mongoose.models.Profile || mongoose.model('Profile' , profileSchema)
+// mongoose.models.Profile || mongoose.model('Profile' , profileSchema);
+// mongoose.models.Chat || mongoose.model('Chat' , chatSchema);
+// mongoose.models.Order || mongoose.model('Order' , orderSchema);
+// mongoose.models.Cart || mongoose.model('Cart' , cartSchema);
+
 
 export interface USER extends Document {
     name : string,
@@ -63,6 +67,6 @@ export const userSchema : Schema<USER> =  new mongoose.Schema({
 })
 
 const User =  mongoose.models.User as mongoose.Model<USER> || 
-                mongoose.model('User' , userSchema);
+                mongoose.model<USER>('User' , userSchema);
 
 export default User;

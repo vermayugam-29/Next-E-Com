@@ -16,16 +16,19 @@ export default function Home() {
   const session = useSession();
 
   useEffect(() => {
-    console.log(session);
     if(session?.status.toString() === 'authenticated') {
       if(session.data?.user) {
         setUser(session.data.user as UserToken);
+        return;
       }
+    }
+    if(!session || session.status === 'unauthenticated') {
+      setUser(null);
     }
   } ,[session])
 
 
-  if (loading) {
+  if (loading || (session && session.status === 'loading')) {
     return <Loading />
   }
 

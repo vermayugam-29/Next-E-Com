@@ -11,7 +11,17 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: '5.imimg.com',
                 pathname: '**'
-            }
+            },
+            {
+                protocol : 'https',
+                hostname : 'assets.aceternity.com',
+                pathname : '**'
+            },
+            {
+                protocol : 'https',
+                hostname : 'via.placeholder.com',
+                pathname : '**'
+            },
         ]
     },
     reactStrictMode : false,

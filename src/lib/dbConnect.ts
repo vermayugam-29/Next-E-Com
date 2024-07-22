@@ -1,6 +1,18 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
+
+import '@/models/userModel';
+import '@/models/itemModel';
+import '@/models/cartModel';
+import '@/models/ratingsModel';
+import '@/models/orderModel';
+import '@/models/otpModel';
+import '@/models/profileModel';
+import '@/models/addressModel';
+import '@/models/chatModel';
+import '@/models/messageModel.';
+
 dotenv.config();
 
 interface ConnectedObject {

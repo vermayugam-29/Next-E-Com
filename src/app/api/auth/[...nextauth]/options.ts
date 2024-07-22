@@ -45,7 +45,10 @@ export const authOptions: NextAuthOptions = {
                     }
 
                     if (await compare(credentials.password, user.password)) {
-                        const newUser =  user.populate('additionalInfo');
+                        const newUser = 
+                        // user.populate('additionalInfo');
+                         await User.findById(user._id)
+                        .populate('additionalInfo').exec();
                         return newUser;
                     } else {
                         throw new Error('Incorrect password');

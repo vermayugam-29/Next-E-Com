@@ -31,6 +31,7 @@ export function SignupFormDemo() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    sessionStorage.setItem('signupForm' , JSON.stringify(formData));
     router.push('/signUp/otp');
   };
 

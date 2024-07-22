@@ -1,6 +1,7 @@
 import mongoose , {Schema , Document} from "mongoose";
-import {ADDRESS } from './addressModel';
+import {ADDRESS, addressSchema } from './addressModel';
 
+// mongoose.models.Address || mongoose.model('Address' , addressSchema);
 
 export interface PROFILE extends Document {
     phoneNumber : string,
@@ -41,5 +42,5 @@ export const profileSchema : Schema<PROFILE> = new mongoose.Schema({
 
 
 const Profile = mongoose.models.Profile as mongoose.Model<PROFILE> || 
-                mongoose.model('Profile' , profileSchema);
+                mongoose.model<PROFILE>('Profile' , profileSchema);
 export default Profile;

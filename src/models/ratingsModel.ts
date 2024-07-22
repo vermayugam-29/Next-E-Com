@@ -1,7 +1,9 @@
 import mongoose, { Schema, Document } from "mongoose";
-import {USER} from "./userModel";
-import {ITEM }  from "./itemModel";
+import {USER, userSchema} from "./userModel";
+import {ITEM, itemSchema }  from "./itemModel";
 
+// mongoose.models.User || mongoose.model('User' , userSchema);
+// mongoose.models.Item || mongoose.model('Item' , itemSchema);
 
 export interface RATING extends Document {
     postedBy: USER,
@@ -40,7 +42,7 @@ export const ratingSchema: Schema<RATING> = new mongoose.Schema({
 })
 
 const RatingAndReviews = mongoose.models.RatingAndReviews as mongoose.Model<RATING> ||
-    mongoose.model('RatingAndReviews', ratingSchema);
+    mongoose.model<RATING>('RatingAndReviews', ratingSchema);
 
 
 export default RatingAndReviews;

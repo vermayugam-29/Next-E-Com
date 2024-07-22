@@ -13,17 +13,18 @@ const page = () => {
 
   const user = useRecoilValue(userDetails);
   const session = useSession();
-  const loading  = useRecoilValue(loadingState);
+  const loading = useRecoilValue(loadingState);
   const router = useRouter();
 
   useEffect(() => {
-    if(session) {
-      toast.error('Please logout first to login again');
-      router.push('/');
+    if (session) {
+      if (session.status === 'authenticated') {
+        router.push('/');
+      }
     }
-  },[user])
+  }, [user , session])
 
-  if(loading) {
+  if (loading) {
     return <Loading />
   }
 

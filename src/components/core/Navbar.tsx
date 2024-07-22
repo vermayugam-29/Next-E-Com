@@ -8,21 +8,32 @@ import { userDetails, userProfile } from '@/recoil/atoms/userState'
 import Link from 'next/link';
 import { userCart } from '@/recoil/atoms/cartState';
 import { allItems } from '@/recoil/atoms/itemState';
+import { useSession } from 'next-auth/react';
+import { UserToken } from '@/types/stateTypes';
 
 const Navbar = () => {
 
     //use session instead of these  user , profile values
 
-    const user = useRecoilValue(userDetails);
+    const [user, setUser] = useRecoilState(userDetails);
     const [cart, setCart] = useRecoilState(userCart);
     const items = useRecoilValue(allItems);
+    const session = useSession()
 
     useEffect(() => {
         const localCart = localStorage.getItem('cart');
         if (!user && localCart) {
             setCart(JSON.parse(localCart));
         }
-    }, [cart])
+        if (session?.status.toString() === 'authenticated') {
+            if (session.data?.user) {
+                setUser(session.data.user as UserToken);
+            }
+        }
+        if (!session || session.status === 'unauthenticated') {
+            setUser(null);
+        }
+    }, [cart, user, session, setUser])
 
     return (
         <form className="navbar bg-base-100">
@@ -36,7 +47,7 @@ const Navbar = () => {
                     disablePortal
                     id="combo-box-demo"
                     options={items}
-                    sx={{ width: 500}}
+                    sx={{ width: 500 }}
                     renderInput={(params) => (
                         <TextField
                             {...params}
@@ -128,12 +139,12 @@ const Navbar = () => {
                                 tabIndex={0}
                                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                                 <li>
-                                    <a className="justify-between">
-                                        Profile
+                                    <a href={'/dashboard'} className="justify-between">
+                                        Dashboard
                                         <span className="badge">New</span>
                                     </a>
                                 </li>
-                                <li><a>Settings</a></li>
+                                {/* <li><a>Settings</a></li> */}
                                 <li><a>Logout</a></li>
                             </ul>
                         </div>)

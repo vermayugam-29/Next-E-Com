@@ -1,5 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { ITEM } from "./itemModel";
+import { ITEM , itemSchema} from "./itemModel";
+
+// mongoose.models.Item || mongoose.model('Item' , itemSchema);
 
 
 export interface QUANTITY extends Document {
@@ -39,5 +41,6 @@ export const cartSchema: Schema<CART> = new mongoose.Schema({
     timestamps: true
 })
 
-const Cart = mongoose.models.Cart as mongoose.Model<CART> || mongoose.model('Cart', cartSchema);
+const Cart = mongoose.models.Cart as mongoose.Model<CART> ||
+ mongoose.model<CART>('Cart', cartSchema);
 export default Cart;
