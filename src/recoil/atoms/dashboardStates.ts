@@ -30,6 +30,11 @@ export const ordersClick = atom<boolean>({
     default : false
 })
 
+export const chatClick = atom<boolean>({
+    key : 'chats',
+    default : false
+})
+
 export const selectedLinkState = atom<string>({
     key : 'selectedLink',
     default : 'Dashboard'

@@ -5,11 +5,12 @@ import React, { useState, createContext, useContext, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { dashboardClick, itemsClick, logoutClick, ordersClick, profileClick, selectedLinkState, settingsClick } from "@/recoil/atoms/dashboardStates";
+import { chatClick, dashboardClick, itemsClick, logoutClick, ordersClick, profileClick, selectedLinkState, settingsClick } from "@/recoil/atoms/dashboardStates";
 import { userDetails } from "@/recoil/atoms/userState";
 
 interface Links {
   label: string;
+  name : string;
   href: string;
   icon: React.JSX.Element | React.ReactNode;
 }
@@ -174,6 +175,7 @@ export const SidebarLink = ({
   const setItems = useSetRecoilState(itemsClick);
   const setLogout = useSetRecoilState(logoutClick);
   const setOrders = useSetRecoilState(ordersClick);
+  const setChats = useSetRecoilState(chatClick);
 
   const [selectedLink, setSelectedLink] = useRecoilState(selectedLinkState);
 
@@ -186,11 +188,14 @@ export const SidebarLink = ({
     Items: setItems,
     Logout: setLogout,
     Orders: setOrders,
+    Chats: setChats
   };
   const { open, animate } = useSidebar();
   const clickHandler = (name: string) => {
     if(name === user?.name) {
       return;
+    } else if (link.label === 'Logout') {
+      setLogout((prev) => !prev);
     }
     setSelectedLink(name);
     Object.keys(stateSetters).forEach((key) => {
@@ -219,7 +224,7 @@ export const SidebarLink = ({
           duration-150 whitespace-pre inline-block !p-0 !m-0
           ${selectedLink === link.label ? 'font-extrabold' : 'font-normal'}`}
       >
-        {link.label}
+        {link.name}
       </motion.span>
     </Link>
   );

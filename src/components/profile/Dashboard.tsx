@@ -6,6 +6,9 @@ import {
   IconBrandTabler,
   IconSettings,
   IconUserBolt,
+  IconPlus,
+  IconBrandHipchat,
+  IconBrandCodesandbox
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -13,7 +16,9 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import {useRecoilValue } from "recoil";
 import { userDetails } from "@/recoil/atoms/userState";
-import Loading from "../loading/Loading";
+import { selectedLinkState } from "@/recoil/atoms/dashboardStates";
+import { Mapping } from "@/utils/profileMapping";
+
 
 function SidebarDemo() {
   const user = useRecoilValue(userDetails);
@@ -22,6 +27,7 @@ function SidebarDemo() {
   const links = [
     {
       label: "Dashboard",
+      name : 'Dashboard',
       href: "#",
       icon: (
         <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
@@ -29,13 +35,39 @@ function SidebarDemo() {
     },
     {
       label: "Profile",
+      name : 'View Profile',
       href: "#",
       icon: (
         <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
+      label: "Items",
+      name : 'Add Items',
+      href: "#",
+      icon: (
+        <IconPlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: "Orders",
+      name : 'View All Orders',
+      href: "#",
+      icon: (
+        <IconBrandCodesandbox className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
+      label: "Chats",
+      name : 'Chats',
+      href: "#",
+      icon: (
+        <IconBrandHipchat className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+      ),
+    },
+    {
       label: "Settings",
+      name : 'Settings',
       href: "#",
       icon: (
         <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
@@ -43,6 +75,7 @@ function SidebarDemo() {
     },
     {
       label: "Logout",
+      name : 'Logout',
       href: "#",
       icon: (
         <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
@@ -75,6 +108,7 @@ function SidebarDemo() {
               link={{
                 label: `${user?.name}`,
                 href: "#",
+                name : `${user?.name}`,
                 icon: (
                   <Image
                     src={user?.profilePhoto as string}
@@ -122,12 +156,16 @@ export const LogoIcon = () => {
 };
 
 // Dummy dashboard component with content
-const Dashboard = () => {
+const Dashboard : React.FC = () => {
+  const selectedLink = useRecoilValue(selectedLinkState);
+  const SelectedComponent = Mapping[selectedLink];
+
   return (
     <div className="flex flex-1">
-      <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+      <div className="rounded-tl-2xl border border-neutral-200 dark:border-neutral-700
+       bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
         
-        <Loading />
+        <SelectedComponent />
 
       </div>
     </div>

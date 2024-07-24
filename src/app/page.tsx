@@ -25,7 +25,8 @@ export default function Home() {
     if(!session || session.status === 'unauthenticated') {
       setUser(null);
     }
-  } ,[session])
+  } ,[session , user , loading])
+
 
 
   if (loading || (session && session.status === 'loading')) {

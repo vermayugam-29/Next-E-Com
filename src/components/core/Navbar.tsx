@@ -1,6 +1,6 @@
 'use client'
 import { top100Films } from '@/data/data'
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -10,10 +10,17 @@ import { userCart } from '@/recoil/atoms/cartState';
 import { allItems } from '@/recoil/atoms/itemState';
 import { useSession } from 'next-auth/react';
 import { UserToken } from '@/types/stateTypes';
+import Logout from '../profile/profileComponents/Logout';
 
 const Navbar = () => {
 
     //use session instead of these  user , profile values
+
+    const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
+
+    const handleLogoutClick = () => {
+        setShowLogoutModal(true);
+    };
 
     const [user, setUser] = useRecoilState(userDetails);
     const [cart, setCart] = useRecoilState(userCart);
@@ -145,7 +152,11 @@ const Navbar = () => {
                                     </a>
                                 </li>
                                 {/* <li><a>Settings</a></li> */}
-                                <li><a>Logout</a></li>
+                                <li onClick={handleLogoutClick}><a>Logout</a></li>
+
+                                {
+                                    showLogoutModal && <Logout />
+                                }
                             </ul>
                         </div>)
                 }
