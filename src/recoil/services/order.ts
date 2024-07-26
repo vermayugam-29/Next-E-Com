@@ -14,11 +14,15 @@ export const createOrder = async (data: any, setLoading: (loading: boolean) => v
             throw new Error(response.data.message);
         }
         toast.success(`${response.data.message}`);
-        setOrders((prev: Order[]) => {
-            return [
-                ...prev,
-                response.data.data
-            ]
+        setOrders((prev: Order[] | null) => {
+            if(!prev) {
+                return [response.data.data];
+            } else {
+                return [
+                    ...prev,
+                    response.data.data
+                ];
+            }
         });
     } catch (err: any) {
         if (err.response && err.response.data && err.response.data.message) {
@@ -127,12 +131,12 @@ export const deliverOrder = async (id: string, setLoading: SetterOrUpdater<boole
 }
 
 export const getAllOrders = async (setLoading: SetterOrUpdater<boolean>,
-    setOrders: SetterOrUpdater<Order[]>): Promise<void> => {
+    setOrders: SetterOrUpdater<Order[] | null>): Promise<void> => {
 
     setLoading(true);
 
     try {
-        const response = await axios.put('/api/users/orders/getAllOrders');
+        const response = await axios.get('/api/users/orders/getAllOrders');
         if (!response.data.success) {
             throw new Error(response.data.message);
         }

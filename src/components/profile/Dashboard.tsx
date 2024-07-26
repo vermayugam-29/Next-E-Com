@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "../ui/sidebar";
 import {
   IconArrowLeft,
@@ -24,7 +24,7 @@ function SidebarDemo() {
   const user = useRecoilValue(userDetails);
 
 
-  const links = [
+  const sideBarData = [
     {
       label: "Dashboard",
       name : 'Dashboard',
@@ -82,6 +82,15 @@ function SidebarDemo() {
       ),
     },
   ];
+
+  const links = sideBarData.filter((e) => {
+    if(user?.accountType !== 'Admin') {
+      return e.label !== 'Items'
+    } else {
+      return e;
+    }
+  })
+
 
   const [open, setOpen] = useState(false);
   return (
@@ -161,9 +170,9 @@ const Dashboard : React.FC = () => {
   const SelectedComponent = Mapping[selectedLink];
 
   return (
-    <div className="flex flex-1">
+    <div className="flex flex-1 overflow-auto">
       <div className="rounded-tl-2xl border border-neutral-200 dark:border-neutral-700
-       bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+       bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full overflow-auto">
         
         <SelectedComponent />
 

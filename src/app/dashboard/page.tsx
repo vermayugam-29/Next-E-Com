@@ -13,7 +13,6 @@ const page = () => {
 
   const session = useSession();
   const [user , setUser] = useRecoilState(userDetails);
-  const loading = useRecoilValue(loadingState);
   const router = useRouter();
 
 
@@ -27,7 +26,7 @@ const page = () => {
     }
   } ,[session , user])
 
-  if(loading || session?.status === 'loading') {
+  if(session?.status === 'loading') {
     return <Loading />
   }
 
